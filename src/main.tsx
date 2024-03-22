@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { MantineProvider, MantineTheme } from '@mantine/core';
+import { MantineProvider } from '@mantine/core';
 import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
@@ -25,8 +25,6 @@ const AppWrapper = () => {
     let importPromise;
     if (import.meta.env.MODE === 'web') {
       importPromise = import('./App.tsx');
-    } else if (import.meta.env.MODE === 'desktop') {
-      importPromise = import('./Desktop.tsx');
     } else {
       importPromise = import('./Default.tsx');
     }
@@ -66,8 +64,3 @@ createRoot(document.getElementById('root')!).render(<Main />);
 
 // Remove Preload scripts loading
 postMessage({ payload: 'removeLoading' }, '*');
-
-// Use contextBridge
-window.ipcRenderer.on('main-process-message', (_event, message) => {
-  console.log(message);
-});
