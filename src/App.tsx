@@ -1,4 +1,5 @@
 // import LanguageSwitcher from "./components/LanguageSwitcher"
+import Navbar from "./components/Navbar"
 import ThemeSwitcher from "./components/ThemeSwitcher"
 
 function App() {
@@ -6,6 +7,7 @@ function App() {
     <>
       <h1>App</h1>
       {/* <LanguageSwitcher /> */}
+      <Navbar />
       <ThemeSwitcher />
     </>
   )
