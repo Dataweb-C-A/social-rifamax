@@ -40,6 +40,7 @@ const AppWrapper = () => {
       withNormalizeCSS
       theme={{
         colorScheme: mode,
+        fontFamily: 'Montserrat, sans-serif',
         other: {
           bgDark: "#1A1B1E",
           bgLight: "#EEF5FF",

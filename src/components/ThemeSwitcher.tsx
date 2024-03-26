@@ -1,30 +1,20 @@
 import { useChangeTheme } from "../hooks/useChangeTheme"
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
-import { Switch } from "@mantine/core";
-import { createStyles } from "@mantine/core";
-
-const useStyles = createStyles((theme) => ({
-  switch: {
-    marginTop: theme.spacing.xl,
-    '&:checked': {
-      background: 'red'
-    }
-  },
-}));
+import { Switch, useMantineTheme } from "@mantine/core";
+import { IconMoonStars, IconSun } from "@tabler/icons-react";
 
 function ThemeSwitcher() {
   const { toggleTheme } = useChangeTheme();
-  const mode = useSelector((state: RootState) => state.theme.mode);
-  const { classes } = useStyles();
+  const theme = useMantineTheme()
 
   return (
     <div>
       <Switch
-        className={classes.switch}
-        checked={mode === "light"}
+        size="lg"
+        mt={6}
         onChange={toggleTheme}
-        size="xl"
+        color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
+        onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />}
+        offLabel={<IconMoonStars size="1rem" stroke={2.5} color={theme.colors.blue[6]} />}
       />
     </div>
   )
