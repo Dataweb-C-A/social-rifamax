@@ -4,6 +4,7 @@ import { MantineProvider } from '@mantine/core';
 import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
+import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
 import './i18n.ts'
 
@@ -56,7 +57,9 @@ const AppWrapper = () => {
 export default function Main() {
   return (
     <Layout>
-      <AppWrapper />
+      <Router>
+        <AppWrapper />
+      </Router>
     </Layout>
   );
 }
