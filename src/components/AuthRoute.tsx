@@ -1,6 +1,7 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
 import { IconCar, IconHome, IconPremiumRights } from '@tabler/icons-react'
+import { useEffect } from 'react'
 
 type Props = {}
 
@@ -14,9 +15,11 @@ function AuthRoute({ }: Props) {
     { label: 'Mi carrito', href: '/my-cart', icon: <IconCar size="3rem" stroke={1.5} /> }
   ]
 
-  if (true) {
-    navigate('/login')
-  }
+  useEffect(() => {
+    if (false) {
+      navigate('/')
+    }
+  }, [])
 
   return (
     <>

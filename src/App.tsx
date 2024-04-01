@@ -11,7 +11,10 @@ function App() {
     <>
       <Switch>
         <Route path="/" element={<Login />} />
-        <Route path="/raffles" element={<Raffles />} />
+        <Route path="raffles" element={<Raffles />} />
+        <Route path="admin" element={<AuthRoute />}>
+          <Route path="dashboard" element={<Home />} />
+        </Route>
         <Route path="/*" element={<ErrorPage errorCode={404} />} />
       </Switch>
     </>

@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import axios from 'axios'
 
 interface UserState {
   user: {
@@ -21,19 +20,16 @@ export const userSlice = createSlice({
   name: "theme",
   initialState,
   reducers: {
-    setUser: (state, action: PayloadAction<string>) => {
-      axios.get(`${import.meta.env.URL_BASE + '/shared/users/profile'}`,{
-        headers: {
-          Authorization: `Bearer ${action.payload}`
-        }
-      })
-      .then((response) => {
-        state.user = response.data;
-      })
+    setUser: (state, action: PayloadAction<UserState>) => {
+      state.user = action.payload.user;
     },
+    clearUser: (state) => {
+      localStorage.removeItem('token')
+      state.user = null;
+    }
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, clearUser } = userSlice.actions;
 
 export default userSlice.reducer;

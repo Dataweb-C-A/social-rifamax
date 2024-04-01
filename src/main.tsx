@@ -5,6 +5,7 @@ import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
 import { BrowserRouter as Router } from 'react-router-dom';
+import { Notifications } from '@mantine/notifications';
 import './index.css';
 import './i18n.ts'
 
@@ -49,6 +50,7 @@ const AppWrapper = () => {
         }
       }}
     >
+      <Notifications position="top-right" zIndex={999999} />
       {!App ? <Loading full message="Loading..." /> : <App />}
     </MantineProvider>
   );
