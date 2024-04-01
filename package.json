@@ -90,6 +90,5 @@
     "@": "src",
     "@components": "src/components",
     "@hooks": "src/hooks"
-  },
-  "packageManager": "yarn@4.1.0"
+  }
 }
