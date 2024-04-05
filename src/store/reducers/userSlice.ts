@@ -9,11 +9,12 @@ interface UserState {
     phone: string;
     role: string;
     content_code: string | null;
+    is_authenticated: boolean;
   } | null;
 }
 
 const initialState: UserState = {
-  user: null
+  user: null,
 };
 
 export const userSlice = createSlice({
@@ -24,9 +25,9 @@ export const userSlice = createSlice({
       state.user = action.payload.user;
     },
     clearUser: (state) => {
-      localStorage.removeItem('token')
+      localStorage.removeItem("token");
       state.user = null;
-    }
+    },
   },
 });
 

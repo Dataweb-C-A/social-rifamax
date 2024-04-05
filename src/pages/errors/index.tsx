@@ -2,6 +2,7 @@ import { Title, createStyles, Button } from "@mantine/core"
 
 interface IErrorPage {
   errorCode: 404 | 401 | 500;
+  withButton?: boolean;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -65,11 +66,14 @@ const useStyles = createStyles((theme) => ({
     maxWidth: 380,
     marginTop: '-50px',
     width: '100%',
-    zIndex: 999999
+    zIndex: 999998
   },
 }))
 
-function ErrorPage({ errorCode }: IErrorPage) {
+function ErrorPage({
+  errorCode,
+  withButton = true
+}: IErrorPage) {
   const { classes } = useStyles()
 
   const errorMessages = {
@@ -86,16 +90,20 @@ function ErrorPage({ errorCode }: IErrorPage) {
             Error: {errorCode}
           </Title>
           <Title ta="center" order={3} color="red" mb={20}>
-            { errorMessages[errorCode] || "Unknown error" }
+            {errorMessages[errorCode] || "Unknown error"}
           </Title>
         </div>
         <div className={classes.redirectContainer}>
-          <Button
-            fullWidth
-            onClick={() => window.location.href = '/'}
-          >
-            Go to Home
-          </Button>
+          {
+            withButton && (
+              <Button
+                fullWidth
+                onClick={() => window.location.href = '/'}
+              >
+                Go to Home
+              </Button>
+            )
+          }
         </div>
       </div>
     </>

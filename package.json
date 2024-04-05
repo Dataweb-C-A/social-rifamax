@@ -25,7 +25,7 @@
     "@mantine/notifications": "6.0.21",
     "@mantine/nprogress": "6.0.21",
     "@mantine/prism": "6.0.21",
-    "@mantine/spotlight": "6.0.21",
+    "@mantine/spotlight": "^6.0.21",
     "@mantine/tiptap": "6.0.21",
     "@reduxjs/toolkit": "^2.2.1",
     "@tabler/icons-react": "^3.1.0",

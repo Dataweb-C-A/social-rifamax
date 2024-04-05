@@ -1,0 +1,30 @@
+import { Image, createStyles } from "@mantine/core";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
+
+interface IRifamaxLogo {
+  size?: number;
+}
+
+function RifamaxLogo({ size }: IRifamaxLogo) {
+  const mode = useSelector((state: RootState) => state.theme.mode);
+  const useStyles = createStyles(() => ({
+    logo: {
+      width: size ? `${size}px !important` : '120px !important',
+      height: size ? `${size}px !important` : '120px !important',
+      marginTop: '27px',
+    },
+  }));
+
+  const { classes } = useStyles();
+
+  return (
+    <Image
+      className={classes.logo}
+      src={`/rifamax_to_${mode.toLowerCase()}.png`}
+      alt={`logo rifamax ${mode.toLowerCase()}`}
+    />
+  )
+}
+
+export default RifamaxLogo

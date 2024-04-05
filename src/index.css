@@ -5,6 +5,10 @@ body {
   box-sizing: border-box;
 }
 
+*:not(.mantine-Text-root) {
+  transition: .150s ease;
+}
+
 /* @keyframes marquee {
   0% {
     transform: translateX(100%);

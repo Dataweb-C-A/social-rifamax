@@ -1,9 +1,12 @@
 import { RootState } from "@/store";
 import { useDisclosure } from '@mantine/hooks';
 import { ReactNode } from "react";
-import { Box, Burger, Drawer, Group, Image, NavLink, Text, createStyles } from "@mantine/core"
+import { Box, Burger, Drawer, Group, NavLink, Text, createStyles } from "@mantine/core"
 import { useSelector } from "react-redux";
 import ThemeSwitcher from "./ThemeSwitcher";
+import RifamaxLogo from "./RifamaxLogo";
+import { IconSearch } from "@tabler/icons-react";
+import { useSpotlight } from "@mantine/spotlight";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -14,11 +17,6 @@ const useStyles = createStyles((theme) => ({
     backgroundColor: 'transparent',
     boxShadow: `0 1px 0 0 ${theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]}`,
     padding: '0 5px',
-  },
-  logo: {
-    width: '120px !important',
-    height: '120px !important',
-    marginTop: '27px',
   },
   link: {
     color: theme.colorScheme === 'dark' ? theme.white : theme.black,
@@ -50,6 +48,22 @@ const useStyles = createStyles((theme) => ({
     marginTop: '10px',
     backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2],
   },
+  spotlightButton: {
+    marginTop: '7px',
+    background: `${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[0]}`,
+    padding: '7px 11px',
+    borderRadius: '100%',
+    transition: 'background .2s ease',
+    border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]}`,
+    userSelect: 'none',
+    cursor: 'pointer',
+    ":active": {
+      border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]}`,
+    },
+    ":hover": {
+      border: `1px solid ${theme.colors.blue[6]}`,
+    },
+  }
 }));
 
 interface INavbar {
@@ -60,16 +74,7 @@ function Navbar({ links }: INavbar) {
   const { classes } = useStyles();
   const mode = useSelector((state: RootState) => state.theme.mode);
   const [opened, { open, close }] = useDisclosure();
-
-  const ImageLogo = () => {
-    return (
-      <Image
-        className={classes.logo}
-        src={`/rifamax_to_${mode.toLowerCase()}.png`}
-        alt={`logo rifamax ${mode.toLowerCase()}`}
-      />
-    )
-  }
+  const spotlight = useSpotlight();
 
   return (
     <nav className={classes.navbar}>
@@ -97,8 +102,11 @@ function Navbar({ links }: INavbar) {
         </Box>
       </Drawer>
       <Group position="apart" px={10} w="100%">
-        <ImageLogo />
+        <RifamaxLogo />
         <Group mt={-72}>
+          <button className={classes.spotlightButton} onClick={() => spotlight.openSpotlight()}>
+            <IconSearch size="0.9rem" style={{ marginTop: 3 }} />
+          </button>
           <ThemeSwitcher />
           <Burger
             className={classes.burger}

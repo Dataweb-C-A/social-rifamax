@@ -1,11 +1,14 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider, Text } from '@mantine/core';
 import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
 import { BrowserRouter as Router } from 'react-router-dom';
 import { Notifications } from '@mantine/notifications';
+import { SpotlightProvider } from '@mantine/spotlight';
+import { IconMapSearch, IconSearch } from '@tabler/icons-react';
+import { actions } from './utils/actions.tsx';
 import './index.css';
 import './i18n.ts'
 
@@ -50,8 +53,24 @@ const AppWrapper = () => {
         }
       }}
     >
-      <Notifications position="top-right" zIndex={999999} />
-      {!App ? <Loading full message="Loading..." /> : <App />}
+      <Notifications position="top-right" zIndex={999999} limit={3} />
+      <SpotlightProvider
+        actions={actions()}
+        searchIcon={<IconSearch size="1.2rem" />}
+        searchPlaceholder="Buscar..."
+        shortcut={"ctrl + B"}
+
+        zIndex={999999}
+        centered
+        nothingFoundMessage={
+          <div style={{ width: '100%', textAlign: 'center', justifyContent: 'center', padding: '50px 0' }}>
+            <IconMapSearch size="3.2rem" />
+            <Text fw={700} fz={22}>No se encontraron resultados</Text>
+          </div>
+        }
+      >
+        {!App ? <Loading full message="Loading..." /> : <App />}
+      </SpotlightProvider>
     </MantineProvider>
   );
 }

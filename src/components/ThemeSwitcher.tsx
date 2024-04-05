@@ -12,7 +12,8 @@ function ThemeSwitcher() {
         size="lg"
         mt={6}
         onChange={toggleTheme}
-        color={theme.colorScheme === 'dark' ? 'gray' : 'dark'}
+        mr='-15px'
+        color={theme.colorScheme === 'dark' ? 'gray' : 'light'}
         onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />}
         offLabel={<IconMoonStars size="1rem" stroke={2.5} color={theme.colors.blue[6]} />}
       />
