@@ -79,11 +79,11 @@ const useStyles = createStyles((theme) => ({
   },
   groupTitle: {
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
+    marginBottom: '10px',
     '@media (max-width: 515px)': {
       flexWrap: 'wrap',
       flexDirection: 'column',
       gap: 0,
-      marginBottom: '10px'
     },
   },
   controlStat: {
