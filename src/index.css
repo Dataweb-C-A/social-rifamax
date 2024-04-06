@@ -9,6 +9,10 @@ body {
   transition: .150s ease;
 }
 
+::-webkit-scrollbar {
+  width: 0;
+}
+
 /* @keyframes marquee {
   0% {
     transform: translateX(100%);
