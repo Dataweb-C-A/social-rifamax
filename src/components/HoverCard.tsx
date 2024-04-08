@@ -5,6 +5,7 @@ interface IHoverCard {
   title?: string;
   description?: string;
   button?: string;
+  onClick?: () => void;
 }
 
 const useStyles = createStyles((theme) => ({
@@ -29,6 +30,10 @@ const useStyles = createStyles((theme) => ({
       background: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[2],
       transitionDuration: '0.6s',
       transitionProperty: 'all'
+    },
+    '@media (max-width: 1100px)': {
+      height: '100%',
+      width: '100%',
     }
   },
   wrapper: {
@@ -73,6 +78,7 @@ function HoverCard({
   // title,
   // description,
   // button
+  onClick
 }: IHoverCard) {
   const { classes } = useStyles()
 
@@ -80,6 +86,7 @@ function HoverCard({
     <Card
       className={classes.hoverCard}
       withBorder
+      onClick={onClick}
     >
       <div className={classes.wrapper}>
         <div className={classes.mark}>

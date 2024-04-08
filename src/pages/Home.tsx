@@ -1,12 +1,19 @@
 // import { useCallback, useMemo, useState } from "react"
 // import axios from "axios"
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Card, Grid, Group, ScrollArea, SegmentedControl, Text, createStyles } from "@mantine/core"
+import { Button, Card, Grid, Group, ScrollArea, SegmentedControl, Text, createStyles } from "@mantine/core"
 import { Carousel } from '@mantine/carousel';
 import HoverCard from "../components/HoverCard"
-import { useId } from 'react';
+import { useId, useState } from 'react';
 // import { IconTrees } from "@tabler/icons-react"
 import Layout from "../Layout";
+import { IconEye, IconEyeClosed } from '@tabler/icons-react';
+
+interface IHoverCarousel {
+  image: string;
+  title: string;
+  button: string;
+}
 
 const useStyles = createStyles((theme) => ({
   homeContainer: {
@@ -80,11 +87,30 @@ const useStyles = createStyles((theme) => ({
   groupTitle: {
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
     marginBottom: '10px',
+    marginTop: '30px',
     '@media (max-width: 515px)': {
       flexWrap: 'wrap',
       flexDirection: 'column',
       gap: 0,
     },
+  },
+  scope: {
+    height: '40px',
+    width: '100%',
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.blue[4],
+    position: 'absolute',
+    top: '0%',
+    left: '0',
+    borderRadius: '3px 3px 10px 10px'
+  },
+  scopeText: {
+    color: theme.white,
+    fontSize: '18px',
+    textAlign: 'center',
+    letterSpacing: '1.5px',
+    fontWeight: 500,
+    marginLeft: '10px',
+    marginTop: '8px'
   },
   controlStat: {
     '@media (max-width: 515px)': {
@@ -95,6 +121,40 @@ const useStyles = createStyles((theme) => ({
     overflowX: 'hidden'
   }
 }))
+
+const HoverCarouselCard = ({ image, title, button }: IHoverCarousel) => {
+  const [showImage, setShowImage] = useState<boolean>(false)
+
+  return (
+    <Card h="100%" mx={2} p={0}>
+      {
+        showImage ? (
+          <>
+            <div style={{ position: 'absolute', right: 10, top: 10 }}>
+              <Button size="xs" color='red' onClick={() => setShowImage(false)} leftIcon={<IconEyeClosed size='1.3rem' />}><Text mt={2}>Cerrar Imagen</Text></Button>
+            </div>
+            <div style={{ width: '100%', height: '100%', backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
+          </>
+        ) : (
+          <div style={{ display: 'flex', height: '100%', width: ' 100%' }}>
+            <div style={{ width: '40px', height: '100%', background: '#4dabf7' }}></div>
+            <div style={{ position: 'absolute', right: 10, top: 10 }}>
+              <Button size="xs" variant='subtle' color='green' onClick={() => setShowImage(true)} leftIcon={<IconEye size='1.3rem' />}><Text mt={2}>Ver imagen</Text></Button>
+            </div>
+            <div style={{ position: 'absolute', left: '40px' }}>
+              <Text ta="start" fw={500} fz={18} color='#4dabf7' ml={10} mt={5}>Rifa</Text>
+              <Text ta="start" fw={350} fz={16} ml={10} mt={-5}>4Runner + una moto</Text>
+              <Text ta="start" fw={500} fz={18} color='#4dabf7' ml={10} mt={5}>Tipo</Text>
+              <Text ta="start" fw={350} fz={16} ml={10} mt={-5}>1000 Números (Triple)</Text>
+              <Text ta="start" fw={500} fz={18} color='#4dabf7' ml={10} mt={10}>Fecha</Text>
+              <Text ta="start" fw={350} fz={16} ml={10} mt={-5}>27/03/2024</Text>
+            </div>
+          </div>
+        )
+      }
+    </Card>
+  )
+};
 
 function Home() {
   const { classes } = useStyles()
@@ -178,29 +238,28 @@ function Home() {
         </div>
         <div className={classes.containerStats}>
           <Carousel
-            height={200}
+            height={165}
             slideSize="33.333333%"
-            slideGap="md"
+            slideGap="xs"
             loop={false}
             align="start"
             className={classes.carousel}
             mb={10}
             breakpoints={[
               { maxWidth: 'md', slideSize: '50%' },
-              { maxWidth: 'xs', slideSize: '100%', slideGap: 0 },
+              { maxWidth: 'sm', slideSize: '100%', slideGap: 0 },
             ]}
           >
             {
-              Array(4)
+              Array(6)
                 .fill(0)
-                .map((_) => (
+                .map((_,) => (
                   <Carousel.Slide>
-                    <Card
-                      className={classes.cardCarousel}
-                      withBorder
-                    >
-                      {_}
-                    </Card>
+                    <HoverCarouselCard
+                      image="https://rifa-max.com/Flyer-Bera.jpg"
+                      title="Moto Bera"
+                      button="Ver ventas"
+                    />
                   </Carousel.Slide>
                 ))
             }
@@ -210,6 +269,9 @@ function Home() {
             withBorder
             shadow="sm"
           >
+            <div className={classes.scope}>
+              <Text className={classes.scopeText}>Global</Text>
+            </div>
             <Group position="apart" px={0} w="100%" className={classes.groupTitle}>
               <Text className={classes.statsTitle}>
                 Reporte de ventas

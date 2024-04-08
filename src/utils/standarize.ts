@@ -1,11 +1,17 @@
-export default function standarize(value: number | string, country: string) {
+interface IStandarize {
+  value: number;
+  country: "en-US" | "es-VE" | "es" | "en";
+  currency: "USD" | "VES" | "EUR" | "GBP";
+}
+
+export default function standarize({ value, country, currency }: IStandarize) {
   if (isNaN(Number(value))) {
-    return "";
+    return "Invalid number";
   }
 
-  return Number(value).toLocaleString("en-US", {
+  return Number(value).toLocaleString(country, {
     style: "currency",
-    currency: "USD",
+    currency: currency,
     minimumFractionDigits: 2,
   });
 }
