@@ -12,7 +12,7 @@ function AuthRoute({ }: Props) {
   const token = localStorage.getItem('token')
 
   const links = [
-    { label: 'Inicio', href: '/', icon: <IconHome size="3rem" stroke={1.5} /> },
+    { label: 'Inicio', href: '/admin/dashboard', icon: <IconHome size="3rem" stroke={1.5} /> },
     { label: 'Mis compras', href: '/purchases', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
     { label: 'Mi carrito', href: '/my-cart', icon: <IconCar size="3rem" stroke={1.5} /> }
   ]

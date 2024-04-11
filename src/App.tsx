@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
 import Raffles from "./pages/Raffles";
 import Mp from './pages/MP'
+import Mpi from './pages/MPI'
 
 function App() {
   return (
@@ -15,7 +16,8 @@ function App() {
         <Route path="raffles" element={<Raffles />} />
         <Route path="admin" element={<AuthRoute />}>
           <Route path="dashboard" element={<Home />} />
-          <Route path="Mp" element={<Mp />} />
+          <Route path="Mp" element={<Mp/>} />
+          <Route path="Mpi" element={<Mpi/>} />
         </Route>
         <Route path="/*" element={<ErrorPage errorCode={404} />} />
       </Switch>
