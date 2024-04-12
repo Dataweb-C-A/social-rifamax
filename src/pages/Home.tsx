@@ -1,25 +1,27 @@
-// import { useCallback, useMemo, useState } from "react"
-// import axios from "axios"
-import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
-import { Button, Card, Grid, Group, ScrollArea, SegmentedControl, Text, createStyles } from "@mantine/core"
+import { Button, Card, Grid, Group, ScrollArea, SegmentedControl, Text, createStyles, useMantineTheme } from "@mantine/core"
 import { Carousel } from '@mantine/carousel';
 import HoverCard from "../components/HoverCard"
 import { useId, useState } from 'react';
-// import { IconTrees } from "@tabler/icons-react"
 import Layout from "../Layout";
-import { IconEye, IconEyeClosed } from '@tabler/icons-react';
+import { IconDownload, IconEye, IconEyeClosed, IconWorld } from '@tabler/icons-react';
+import ReactApexChart, { Props as IApexChart } from 'react-apexcharts';
+import standarize from "../utils/standarize";
 
 interface IHoverCarousel {
   image: string;
   title: string;
   button: string;
+  onClick?: () => void;
 }
 
 const useStyles = createStyles((theme) => ({
   homeContainer: {
     width: '100%',
     display: 'flex',
-    flexWrap: 'wrap'
+    flexWrap: 'wrap',
+    '@media (min-width: 1100px)': {
+      overflow: 'hidden'
+    }
   },
   containerStats: {
     width: 'calc(100% - 384px)',
@@ -36,6 +38,10 @@ const useStyles = createStyles((theme) => ({
     '@media (max-width: 1100px)': {
       display: 'none'
     },
+  },
+  groupChart: {
+    borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[3]}`,
+    paddingBottom: '10px'
   },
   carousel: {
     '@media (min-width: 1100px)': {
@@ -82,7 +88,10 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 500,
     textDecoration: 'none',
     marginTop: '8px',
-    marginLeft: '10px'
+    marginLeft: '10px',
+  },
+  cardCharts: {
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[0],
   },
   groupTitle: {
     borderBottom: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.gray[2]}`,
@@ -94,23 +103,52 @@ const useStyles = createStyles((theme) => ({
       gap: 0,
     },
   },
+  markData: {
+    width: '40px',
+    height: '100%',
+    background: theme.colors.red[5],
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    borderRadius: '3px 0 0 3px'
+  },
+  markSells: {
+    width: '40px',
+    height: '100%',
+    background: theme.colors.teal[4],
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    borderRadius: '3px 0 0 3px'
+  },
+  mark: {
+    width: '40px',
+    height: '100%',
+    background: theme.colors.blue[4],
+    position: 'absolute',
+    left: 0,
+    top: 0,
+    borderRadius: '3px 0 0 3px'
+  },
   scope: {
-    height: '40px',
+    height: '34px',
     width: '100%',
     background: theme.colorScheme === 'dark' ? theme.colors.dark[5] : theme.colors.blue[4],
     position: 'absolute',
     top: '0%',
     left: '0',
-    borderRadius: '3px 3px 10px 10px'
+    borderTop: `0.0625rem solid ${theme.colorScheme === 'dark' ? '#373A40' : '#dee2e6'}`,
+    borderLeft: `0.0625rem solid ${theme.colorScheme === 'dark' ? '#373A40' : '#dee2e6'}`,
+    borderRight: `0.0625rem solid ${theme.colorScheme === 'dark' ? '#373A40' : '#dee2e6'}`,
+    borderRadius: '3px 3px 0 0'
   },
   scopeText: {
     color: theme.white,
-    fontSize: '18px',
+    fontSize: theme.fontSizes.md,
     textAlign: 'center',
-    letterSpacing: '1.5px',
-    fontWeight: 500,
+    fontWeight: 700,
     marginLeft: '10px',
-    marginTop: '8px'
+    marginTop: '4px'
   },
   controlStat: {
     '@media (max-width: 515px)': {
@@ -122,7 +160,7 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
-const HoverCarouselCard = ({ image, title, button }: IHoverCarousel) => {
+const HoverCarouselCard = ({ image, title, button, onClick }: IHoverCarousel) => {
   const [showImage, setShowImage] = useState<boolean>(false)
 
   return (
@@ -136,7 +174,7 @@ const HoverCarouselCard = ({ image, title, button }: IHoverCarousel) => {
             <div style={{ width: '100%', height: '100%', backgroundImage: `url(${image})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></div>
           </>
         ) : (
-          <div style={{ display: 'flex', height: '100%', width: ' 100%' }}>
+          <Card p={0} withBorder shadow="xs" style={{ display: 'flex', height: '100%', width: ' 100%' }} onClick={onClick}>
             <div style={{ width: '40px', height: '100%', background: '#4dabf7' }}></div>
             <div style={{ position: 'absolute', right: 10, top: 10 }}>
               <Button size="xs" variant='subtle' color='green' onClick={() => setShowImage(true)} leftIcon={<IconEye size='1.3rem' />}><Text mt={2}>Ver imagen</Text></Button>
@@ -149,7 +187,7 @@ const HoverCarouselCard = ({ image, title, button }: IHoverCarousel) => {
               <Text ta="start" fw={500} fz={18} color='#4dabf7' ml={10} mt={10}>Fecha</Text>
               <Text ta="start" fw={350} fz={16} ml={10} mt={-5}>27/03/2024</Text>
             </div>
-          </div>
+          </Card>
         )
       }
     </Card>
@@ -158,57 +196,70 @@ const HoverCarouselCard = ({ image, title, button }: IHoverCarousel) => {
 
 function Home() {
   const { classes } = useStyles()
+  const theme = useMantineTheme()
+  const [finder, setFinder] = useState<string>("general")
 
-  const data = [
-    {
-      name: 'Lunes',
-      uv: 40,
-      pv: 400,
-      amt: 2400,
+  const options = {
+    series: [{
+      name: 'Cantidad de ventas',
+      data: [10, 14, 28, 51, 42, 109, 100]
+    }, {
+      name: 'Ganancia por ventas',
+      data: [20, 32, 56, 102, 66, 218, 200]
+    }],
+    options: {
+      theme: {
+        mode: theme.colorScheme,
+      },
+      grid: {
+        show: false
+      },
+      chart: {
+        height: 350,
+        background: 'transparent',
+        type: 'area',
+        foreColor: theme.colorScheme === 'dark' ? theme.white : theme.black,
+        toolbar: {
+          show: true,
+          tools: {
+            download: true,
+            reset: true,
+            zoomin: false,
+            zoomout: false,
+          },
+          export: {
+            csv: {
+              filename: undefined,
+            },
+            svg: {
+              filename: undefined,
+            },
+          }
+        },
+      },
+      dataLabels: {
+        enabled: false,
+      },
+      stroke: {
+        curve: 'smooth'
+      },
+      xaxis: {
+        type: 'datetime',
+        categories: ["2018-09-19T00:00:00.000Z", "2018-09-20T00:00:00.000Z", "2018-09-21T00:00:00.000Z", "2018-09-22T00:00:00.000Z", "2018-09-23T00:00:00.000Z", "2018-09-24T00:00:00.000Z", "2018-09-25T00:00:00.000Z"]
+      },
+      tooltip: {
+        x: {
+          format: 'dd-MM-yyyy'
+        },
+      },
     },
-    {
-      name: 'Martes',
-      uv: 20,
-      pv: 200,
-      amt: 2210,
-    },
-    {
-      name: 'Miercoles',
-      uv: 40,
-      pv: 400,
-      amt: 2290,
-    },
-    {
-      name: 'Jueves',
-      uv: 80,
-      pv: 800,
-      amt: 2000,
-    },
-    {
-      name: 'Viernes',
-      uv: 10,
-      pv: 100,
-      amt: 2181,
-    },
-    {
-      name: 'Sabado',
-      uv: 90,
-      pv: 900,
-      amt: 2500,
-    },
-    {
-      name: 'Domingo',
-      uv: 9,
-      pv: 90,
-      amt: 2100,
-    },
-  ];
+  } satisfies IApexChart
 
   return (
     <Layout>
       <div className={classes.homeContainer}>
         <div className={classes.raffleCardCont}>
-          {/* <Button
+          <Button
             fullWidth
             variant="light"
             mb={10}
@@ -216,11 +267,11 @@ function Home() {
               background: theme.colorScheme === 'dark' ? theme.colors.blue[5] : theme.colors.blue[4],
               color: theme.colorScheme === 'dark' ? theme.white : theme.white
             }}
-            leftIcon={<IconTrees />}
+            leftIcon={<IconWorld />}
             onClick={() => setFinder("general")}
           >
             Ver ventas global
-          </Button> */}
+          </Button>
           <ScrollArea h="calc(100vh - 95px)" type="scroll" scrollbarSize={2}>
             {
               Array(6)
@@ -230,6 +281,7 @@ function Home() {
                     image="https://rifa-max.com/Flyer-Bera.jpg"
                     title="Moto Bera"
                     button="Ver ventas"
+                    onClick={() => setFinder('Moto Bera')}
                     key={useId()}
                   />
                 ))
@@ -259,6 +311,7 @@ function Home() {
                       image="https://rifa-max.com/Flyer-Bera.jpg"
                       title="Moto Bera"
                       button="Ver ventas"
+                      onClick={() => setFinder('Moto Bera - 1000 numeros')}
                     />
                   </Carousel.Slide>
                 ))
@@ -270,7 +323,9 @@ function Home() {
             shadow="sm"
           >
             <div className={classes.scope}>
-              <Text className={classes.scopeText}>Global</Text>
+              <Text className={classes.scopeText}>
+                {finder === "general" ? "Global" : finder}
+              </Text>
             </div>
             <Group position="apart" px={0} w="100%" className={classes.groupTitle}>
               <Text className={classes.statsTitle}>
@@ -280,65 +335,67 @@ function Home() {
                 className={classes.controlStat}
                 mb={10}
                 data={[
-                  { label: 'Anual', value: 'vue' },
-                  { label: 'Mensual', value: 'react' },
-                  { label: 'Semanal', value: 'ng' },
+                  { label: 'Anual', value: 'yearly' },
+                  { label: 'Mensual', value: 'monthly' },
+                  { label: 'Semanal', value: 'weekly' },
                 ]}
               />
             </Group>
-            <ScrollArea h="100%" type='hover' scrollbarSize={2} className={classes.scrollTitles}>
-              <Grid>
-                <Grid.Col md={6} sm={12}>
-                  <Text className={classes.quantityStatsTitle}>
-                    Cantidad de ventas
-                  </Text>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart
-                      width={500}
-                      height={200}
-                      data={data}
-                      syncId="anyId"
-                      margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area type="natural" dataKey="uv" stroke="#8884d8" fill="#8884d8" />
-                    </AreaChart>
-                  </ResponsiveContainer>
+            <ScrollArea
+              h="calc(100% - 150px)"
+              type='never'
+              scrollbarSize={2}
+              className={classes.scrollTitles}
+            >
+              <Grid mb={5} grow gutter={10}>
+                <Grid.Col xs={6} md={4}>
+                  <Card withBorder shadow="xs" p={10} h={120} className={classes.cardCharts}>
+                    <div className={classes.mark} />
+                    <Text className={classes.quantityStatsTitle}>
+                      Ganancia total
+                    </Text>
+                    <Text ta="center" fz={30} mt={10}>
+                      {
+                        standarize({ value: 1192.09, country: "en-US", currency: 'USD' })
+                      }
+                    </Text>
+                  </Card>
                 </Grid.Col>
-                <Grid.Col md={6} sm={12}>
-                  <Text className={classes.profitTitle}>
-                    Ganancias por ventas
-                  </Text>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart
-                      width={500}
-                      height={200}
-                      data={data}
-                      syncId="anyId"
-                      margin={{
-                        top: 10,
-                        right: 30,
-                        left: 0,
-                        bottom: 0,
-                      }}
-                    >
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="name" />
-                      <YAxis />
-                      <Tooltip />
-                      <Area type="natural" dataKey="pv" stroke="#82ca9d" fill="#82ca9d" />
-                    </AreaChart>
-                  </ResponsiveContainer>
+                <Grid.Col xs={6} md={4}>
+                  <Card withBorder shadow="xs" p={10} h={120} className={classes.cardCharts}>
+                    <div className={classes.markSells} />
+                    <Text className={classes.quantityStatsTitle}>
+                      Rifas activas
+                    </Text>
+                    <Text ta="center" fz={30} mt={10}>
+                      6
+                    </Text>
+                  </Card>
+                </Grid.Col>
+                <Grid.Col xs={6} md={4}>
+                  <Card withBorder shadow="xs" p={10} h={120} className={classes.cardCharts}>
+                    <div className={classes.markData} />
+                    <Text className={classes.quantityStatsTitle}>
+                      Rifas expiradas
+                    </Text>
+                    <Text ta="center" fz={30} mt={10}>
+                      1
+                    </Text>
+                  </Card>
                 </Grid.Col>
               </Grid>
+              <Card w="100%" withBorder shadow="xs" className={classes.cardCharts}>
+                <Group position="center" px={0} w="100%" className={classes.groupChart}>
+                  <Text className={classes.profitTitle}>
+                    Cantidad de ventas | Ganancias por ventas
+                  </Text>
+                </Group>
+                { /* Chart */}
+                <div id="chart">
+                  <ReactApexChart options={options.options} series={options.series} type="area" height={350} />
+                </div>
+                <div id="html-dist"></div>
+              </Card>
             </ScrollArea>
           </Card>
         </div>

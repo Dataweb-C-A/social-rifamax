@@ -1,6 +1,6 @@
 import { Outlet, useNavigate } from 'react-router-dom'
 import Navbar from './Navbar'
-import { IconCar, IconHome, IconPremiumRights } from '@tabler/icons-react'
+import { IconHome, IconPremiumRights, IconUserCircle } from '@tabler/icons-react'
 import { useEffect } from 'react'
 import useAuth from '../hooks/useAuth'
 
@@ -12,9 +12,9 @@ function AuthRoute({ }: Props) {
   const token = localStorage.getItem('token')
 
   const links = [
-    { label: 'Inicio', href: '/admin/dashboard', icon: <IconHome size="3rem" stroke={1.5} /> },
-    { label: 'Mis compras', href: '/purchases', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
-    { label: 'Mi carrito', href: '/my-cart', icon: <IconCar size="3rem" stroke={1.5} /> }
+    { label: 'Inicio', href: '/', icon: <IconHome size="3rem" stroke={1.5} /> },
+    { label: 'Mis ventas', href: '/purchases', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
+    { label: 'Mi perfil', href: '/profile', icon: <IconUserCircle size="3rem" stroke={1.5} /> }
   ]
 
   useEffect(() => {
