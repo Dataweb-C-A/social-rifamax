@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Card, Button,Title,Text, Group, Image } from '@mantine/core';
+import { Card, Button, Title, Text, Group, Image } from '@mantine/core';
 import { IconShoppingBag } from '@tabler/icons-react';
 function MP() {
     const [timeLeft, setTimeLeft] = useState({
@@ -43,9 +43,9 @@ function MP() {
     }
 
     return (
-        <Card mt={15} ml={35} mr={35} radius='md'>
+        <Card mt={10} mx={10} radius='md'>
             <Group w='100%' position="apart">
-                <div style={{margin:'auto'}}>
+                <div style={{ margin: 'auto' }}>
 
                     <Title mb={25} order={1}> Rifa de 4Runner</Title>
 
@@ -69,19 +69,19 @@ function MP() {
                     </Group>
                     <Group position='apart'>
 
-                    <Text ml={15} fz="xs">Dias</Text>
-                    <Text fz="xs">Horas</Text>
-                    <Text fz="xs">Minuto</Text>
-                    <Text fz="xs">Segundos</Text>
-                    
+                        <Text ml={15} fz="xs">Dias</Text>
+                        <Text fz="xs">Horas</Text>
+                        <Text fz="xs">Minuto</Text>
+                        <Text fz="xs">Segundos</Text>
+
                     </Group>
-                    <Button leftIcon={<IconShoppingBag/>} variant="outline" fullWidth mt={15} color="teal" radius="md" size="md" onClick={() => { window.location.href = '/admin/mpi'; }}>
-  Comprar 
-</Button>
+                    <Button leftIcon={<IconShoppingBag />} variant="outline" fullWidth mt={15} color="teal" radius="md" size="md" onClick={() => { window.location.href = '/admin/mpi'; }}>
+                        Comprar
+                    </Button>
 
                 </div>
                 <div >
-                    <Image style={{margin:'auto'}}  maw='100%' radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
+                    <Image style={{ margin: 'auto' }} maw='100%' radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
                 </div>
             </Group>
         </Card>
