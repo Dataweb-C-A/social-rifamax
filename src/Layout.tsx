@@ -3,9 +3,10 @@ import { createStyles } from '@mantine/core'
 
 interface ILayout {
   children?: ReactNode
+  noOverlap?: boolean
 }
 
-function Layout({ children }: ILayout) {
+function Layout({ children, noOverlap = false }: ILayout) {
   const useStyles = createStyles((theme) => ({
     main: {
       display: 'flex',
@@ -17,7 +18,7 @@ function Layout({ children }: ILayout) {
       height: 'calc(100vh - 75px)',
       width: '1920px',
       display: 'flex',
-      padding: '10px 10px',
+      padding: `${noOverlap ? 0 : '10px 10px'}`,
     }
   }))
 

@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 
 interface IRifamaxLogo {
   size?: number;
+  force?: 'dark' | 'light'
 }
 
-function RifamaxLogo({ size }: IRifamaxLogo) {
+function RifamaxLogo({ size, force }: IRifamaxLogo) {
   const mode = useSelector((state: RootState) => state.theme.mode);
   const useStyles = createStyles(() => ({
     logo: {
@@ -21,8 +22,8 @@ function RifamaxLogo({ size }: IRifamaxLogo) {
   return (
     <Image
       className={classes.logo}
-      src={`/rifamax_to_${mode.toLowerCase()}.png`}
-      alt={`logo rifamax ${mode.toLowerCase()}`}
+      src={`/rifamax_to_${force ? force : mode.toLowerCase()}.png`}
+      alt={`logo rifamax ${force ? force : mode.toLowerCase()}`}
     />
   )
 }

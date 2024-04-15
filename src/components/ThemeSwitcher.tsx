@@ -1,4 +1,4 @@
-import { useChangeTheme } from "../hooks/useChangeTheme"
+import { useChangeTheme } from "../hooks/useChangeTheme";
 import { Switch, useMantineTheme } from "@mantine/core";
 import { IconMoonStars, IconSun } from "@tabler/icons-react";
 

@@ -1,12 +1,6 @@
-import { RootState } from "@/store";
-import { useDisclosure } from '@mantine/hooks';
-import { ReactNode } from "react";
-import { Box, Burger, Drawer, Group, NavLink, Text, createStyles } from "@mantine/core"
-import { useSelector } from "react-redux";
+import { Group, createStyles } from "@mantine/core"
 import ThemeSwitcher from "./ThemeSwitcher";
 import RifamaxLogo from "./RifamaxLogo";
-import { IconSearch } from "@tabler/icons-react";
-import { useSpotlight } from "@mantine/spotlight";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -66,67 +60,21 @@ const useStyles = createStyles((theme) => ({
   }
 }));
 
-interface INavbar {
-  links: { label: string, href: string, icon: ReactNode }[]
-}
+interface IPublicNavbar { }
 
-function Navbar({ links }: INavbar) {
+function PublicNavbar({ }: IPublicNavbar) {
   const { classes } = useStyles();
-  const mode = useSelector((state: RootState) => state.theme.mode);
-  const [opened, { open, close }] = useDisclosure();
-  const spotlight = useSpotlight();
 
   return (
     <nav className={classes.navbar}>
-      <Drawer
-        opened={opened}
-        onClose={close}
-        padding="md"
-        position="right"
-        closeButtonProps={{
-          size: 'xl',
-          color: mode === 'light' ? 'dark' : undefined,
-          "aria-label": 'Close menu'
-        }}
-        title={<Text fz={30} fw={600} mt={5}>Menú</Text>}
-      >
-        <Box>
-          {links.map((link) => (
-            <NavLink
-              className={link.href === window.location.pathname ? classes.navlinkActive : classes.navlink}
-              label={<Text fz={25} fw={300}>{link.label}</Text>}
-              icon={link.icon}
-              onClick={() => window.location.replace(link.href)}
-            />
-          ))}
-        </Box>
-      </Drawer>
       <Group position="apart" px={10} w="100%">
         <RifamaxLogo />
         <Group mt={-72}>
-          <button className={classes.spotlightButton} onClick={() => spotlight.openSpotlight()}>
-            <IconSearch size="1rem" style={{ marginTop: 5 }} />
-          </button>
           <ThemeSwitcher />
-          <Burger
-            className={classes.burger}
-            opened={opened}
-            onClick={open}
-            aria-label="Toggle navigation"
-          />
-          {links.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              className={classes.link}
-            >
-              {link.label}
-            </a>
-          ))}
         </Group>
       </Group>
     </nav>
   )
 }
 
-export default Navbar
+export default PublicNavbar
