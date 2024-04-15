@@ -5,12 +5,14 @@ import ErrorPage from "./pages/errors";
 import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
 import Raffles from './pages/MP'
+import Rafflesi from './pages/MPI'
 
 function App() {
   return (
     <>
       <Switch>
         <Route path="raffles" element={<Raffles />} />
+        <Route path="rafflesi" element={<Rafflesi />} />
         <Route path="admin" element={<AuthRoute />}>
           <Route path="login" element={<Login />} />
           <Route path="dashboard" element={<Home />} />

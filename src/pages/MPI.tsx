@@ -5,14 +5,9 @@ import { IconShoppingBag } from '@tabler/icons-react';
 function MPI() {
     const useStyles = createStyles((theme) =>
     ({
-        cartainfo: {
-            width: '37vh',
-            [`@media (min-width: 1281px)`]: {
-                width: '77vh',
-            }
-        },
+       
         ticketsList100: {
-            width: '100%',
+            width: '75%',
             display: 'flex',
             flexWrap: 'wrap',
             gap: '10px',
@@ -87,24 +82,20 @@ function MPI() {
     function formatNumber(num: number): string {
         return num < 10 ? `0${num}` : `${num}`;
     }
-    const numbers: number[] = Array.from({ length: 25 }, (_, index) => index + 1);
+    const numbers: number[] = Array.from({ length: 50 }, (_, index) => index + 1);
 
     return (
         <Card mt={15} ml={5} mr={5} radius='md'>
 
-
+<Group>
 
             <Card mb={15} radius='xl' style={{ background: '#191B1E' }}>
 
-                <Grid>
-                    <Grid.Col md={6} lg={6}>
 
-                        <div style={{ maxWidth: '100%', margin: '0 auto' }}>
-                            <Image mx="auto" width='100%' height={300} radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
-                        </div>
+                            <Image maw={350} mx="auto" radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
+                      
 
-                    </Grid.Col>
-                    <Grid.Col md={6} lg={6}>
+                  
                         <Group position='center' style={{ maxWidth: '100%', margin: '0 auto' }}>
 
                             <div style={{ marginRight: '20px' }}>
@@ -181,11 +172,6 @@ function MPI() {
                             </Group>
                         </div>
 
-                    </Grid.Col>
-
-                </Grid>
-
-
 
             </Card>
 
@@ -201,10 +187,14 @@ function MPI() {
                         {number}
                     </Card>
                 ))}
-            </div>
-            <Button mt={15} fullWidth onClick={() => setOpened(true)} color="green" radius="md" size="md"  variant="outline" >
+                            <Button mt={15}  onClick={() => setOpened(true)} color="green" radius="md" size="md"  variant="outline" >
                                         Comprar
                                     </Button>
+            </div>
+            
+</Group>
+
+
         </Card>
     )
 }
