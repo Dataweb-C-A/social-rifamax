@@ -13,7 +13,6 @@ interface IRaffleCard {
   }
 }
 
-
 function RaffleCard({ data }: IRaffleCard) {
   const useStyles = createStyles((theme) => ({
     raffleCard: {
