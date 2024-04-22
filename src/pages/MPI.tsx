@@ -100,7 +100,7 @@ function MPI() {
     const [textInputValue, setTextInputValue] = useState<string>('');
     const [selectValue, setSelectValue] = useState<string>('');
     const [countries, setCountries] = useState<Country[]>([]);
-    const [selectedCountry, setSelectedCountry] = useState<string>(''); // default value set to an empty string
+    const [selectedCountry, setSelectedCountry] = useState<string>('');
 
 
     const [active, setActive] = useState(0);
@@ -516,118 +516,120 @@ function MPI() {
                     </Stepper.Completed>
                 </Stepper>
             </Modal>
-            <Card mt={15} ml={5} mr={5} radius='md'>
+            <ScrollArea h='100%' type="never">
+                <Card mt={15} ml={5} mr={5} radius='md'>
 
-                <Group position='center'>
-
-
-                    <Card mb={15} radius='xl' className={classes.cardCharts}>
+                    <Group position='center'>
 
 
-                        <Image maw={350} mx="auto" radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
+                        <Card mb={15} radius='xl' className={classes.cardCharts}>
+
+
+                            <Image maw={350} mx="auto" radius="md" src="https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492" alt="Random image" />
 
 
 
-                        <Group position='apart' style={{ maxWidth: '100%', margin: '0 auto' }}>
+                            <Group position='apart' style={{ maxWidth: '100%', margin: '0 auto' }}>
 
-                            <div style={{ marginRight: '20px' }}>
-                                <Title order={4} c='#56CCF2' >
-                                    RIFA
-                                </Title>
-                                <Title order={6} >
-                                    Rifa de 4Runner
-                                </Title>
-                                <Title order={4} c='#56CCF2' >
-                                    Tipo
-                                </Title>
-                                <Title order={6} >
-                                    100 Numeros
-                                </Title>
-                                <Title order={4} c='#56CCF2' >
-                                    Fecha
-                                </Title>
-                                <Title order={6} >
-                                    10 / 04 / 2024
-                                </Title>
+                                <div style={{ marginRight: '20px' }}>
+                                    <Title order={4} c='#56CCF2' >
+                                        RIFA
+                                    </Title>
+                                    <Title order={6} >
+                                        Rifa de 4Runner
+                                    </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        Tipo
+                                    </Title>
+                                    <Title order={6} >
+                                        100 Numeros
+                                    </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        Fecha
+                                    </Title>
+                                    <Title order={6} >
+                                        10 / 04 / 2024
+                                    </Title>
 
-                                <Title order={4} c='#56CCF2' >
-                                    Loteria
-                                </Title>
-                                <Title order={6} >
-                                    Zulia 7A
-                                </Title>
+                                    <Title order={4} c='#56CCF2' >
+                                        Loteria
+                                    </Title>
+                                    <Title order={6} >
+                                        Zulia 7A
+                                    </Title>
+                                </div>
+
+                                <div >
+
+                                    <RingProgress
+                                        sections={[{ value: 40, color: 'green' }]}
+                                        label={
+                                            <Text color="green" weight={600} align="center" size="xl">
+                                                40%
+                                            </Text>
+                                        }
+                                    />
+                                    <Text color="green" weight={700} align="center" size="xl">
+                                        Progreso
+                                    </Text>
+
+                                </div>
+                            </Group>
+                            <div>
+
+                                <Title order={4} mt={5} ta='center'>Tiempo restante</Title>
+                                <Group position="center">
+                                    <Card w={50} withBorder ta="center" mx="auto">
+                                        <span>{formatNumber(timeLeft.days)}</span>
+                                    </Card>
+                                    <Card w={50} withBorder ta="center" mx="auto">
+                                        <span>{formatNumber(timeLeft.hours)}</span>
+                                    </Card>
+                                    <Card w={50} withBorder ta="center" mx="auto">
+                                        <span>{formatNumber(timeLeft.minutes)}</span>
+                                    </Card>
+                                    <Card w={50} withBorder ta="center" mx="auto">
+                                        <span>{formatNumber(timeLeft.seconds)}</span>
+                                    </Card>
+                                    {Object.keys(timeLeft).length === 0 && (
+                                        <span>Countdown Finished!</span>
+                                    )}
+                                </Group>
+                                <Group position='apart'>
+
+                                    <Text ml={45} fz="xs">Dias</Text>
+                                    <Text fz="xs">Horas</Text>
+                                    <Text fz="xs">Minuto</Text>
+                                    <Text mr={25} fz="xs">Segundos</Text>
+
+                                </Group>
                             </div>
 
-                            <div >
 
-                                <RingProgress
-                                    sections={[{ value: 40, color: 'green' }]}
-                                    label={
-                                        <Text color="green" weight={600} align="center" size="xl">
-                                            40%
-                                        </Text>
-                                    }
-                                />
-                                <Text color="green" weight={700} align="center" size="xl">
-                                    Progreso
-                                </Text>
+                        </Card>
 
-                            </div>
-                        </Group>
-                        <div>
 
-                            <Title order={4} mt={5} ta='center'>Tiempo restante</Title>
-                            <Group position="center">
-                                <Card w={50} withBorder ta="center" mx="auto">
-                                    <span>{formatNumber(timeLeft.days)}</span>
+
+
+
+                        <div className={classes.ticketsList100}>
+
+
+                            {numbers.map((number, index) => (
+                                <Card shadow='xl' className={classes.tickets100} key={index} >
+                                    {number}
                                 </Card>
-                                <Card w={50} withBorder ta="center" mx="auto">
-                                    <span>{formatNumber(timeLeft.hours)}</span>
-                                </Card>
-                                <Card w={50} withBorder ta="center" mx="auto">
-                                    <span>{formatNumber(timeLeft.minutes)}</span>
-                                </Card>
-                                <Card w={50} withBorder ta="center" mx="auto">
-                                    <span>{formatNumber(timeLeft.seconds)}</span>
-                                </Card>
-                                {Object.keys(timeLeft).length === 0 && (
-                                    <span>Countdown Finished!</span>
-                                )}
-                            </Group>
-                            <Group position='apart'>
-
-                                <Text ml={45} fz="xs">Dias</Text>
-                                <Text fz="xs">Horas</Text>
-                                <Text fz="xs">Minuto</Text>
-                                <Text mr={25} fz="xs">Segundos</Text>
-
-                            </Group>
+                            ))}
+                            <Button mt={15} onClick={() => setOpened(true)} color="green" radius="md" size="md" variant="outline" >
+                                Comprar
+                            </Button>
                         </div>
 
-
-                    </Card>
-
+                    </Group>
 
 
-
-
-                    <div className={classes.ticketsList100}>
-
-
-                        {numbers.map((number, index) => (
-                            <Card shadow='xl' className={classes.tickets100} key={index} >
-                                {number}
-                            </Card>
-                        ))}
-                        <Button mt={15} onClick={() => setOpened(true)} color="green" radius="md" size="md" variant="outline" >
-                            Comprar
-                        </Button>
-                    </div>
-
-                </Group>
-
-
-            </Card>
+                </Card>
+            </ScrollArea>
         </>
     )
 }
