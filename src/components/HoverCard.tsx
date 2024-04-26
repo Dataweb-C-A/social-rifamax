@@ -1,4 +1,4 @@
-import { Text, Card, createStyles, Group, Button } from "@mantine/core";
+import { Text, Card, createStyles } from "@mantine/core";
 
 interface IHoverCard {
   image?: string;

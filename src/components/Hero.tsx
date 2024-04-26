@@ -6,7 +6,7 @@ interface IHero {
   button: string
 }
 
-function Hero({ description, image, button }: IHero) {
+function Hero({ description, image }: IHero) {
   const useStyles = createStyles((theme) => ({
     hero: {
       backgroundImage: `url(${image})`,

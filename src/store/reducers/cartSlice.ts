@@ -24,11 +24,11 @@ export const cartSlice = createSlice({
     setProducts: (state, action: PayloadAction<CartState>) => {
       state.cart = action.payload.cart;
     },
-    addProduct: (state, action: PayloadAction<CartState>) => {
+    addProduct: (state) => {
       // state.cart.products.push(action.payload.cart.products[0]);
       localStorage.setItem("cart", JSON.stringify(state.cart));
     },
-    removeProduct: (state, action: PayloadAction<CartState>) => {
+    removeProduct: (state) => {
       // state.cart.products = state.cart.products.filter(
       //   (product) => product.identifier !== action.payload.cart.products[0].identifier
       // );

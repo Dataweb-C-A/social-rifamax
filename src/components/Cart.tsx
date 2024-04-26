@@ -1,14 +1,14 @@
-import { IconShoppingCart, IconTrash } from "@tabler/icons-react"
-import { Divider, Popover, Text, createStyles, Button, Group, Card } from "@mantine/core"
+import { IconShoppingCart, /*IconTrash*/ } from "@tabler/icons-react"
+import { Divider, Popover, Text, createStyles, Button, Group,/* Card */} from "@mantine/core"
 import standarize from "../utils/standarize";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 
-interface IProducts {
-  identifier: string;
-  price: string;
-  raffle_id: string;
-}
+// interface IProducts {
+//   identifier: string;
+//   price: string;
+//   raffle_id: string;
+// }
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -42,34 +42,34 @@ function Cart() {
   const { classes } = useStyles();
   const selector = useSelector((state: RootState) => state.cart);
 
-  const cart = [
-    {
-      identifier: '1',
-      price: '10000',
-      raffle_id: '1'
-    },
-    {
-      identifier: '2',
-      price: '10000',
-      raffle_id: '2'
-    }
-  ] satisfies IProducts[];
+  // const cart = [
+  //   {
+  //     identifier: '1',
+  //     price: '10000',
+  //     raffle_id: '1'
+  //   },
+  //   {
+  //     identifier: '2',
+  //     price: '10000',
+  //     raffle_id: '2'
+  //   }
+  // ] satisfies IProducts[];
 
-  const ProductsCart = (products: IProducts[]) => {
-    return (
-      <>
-        {
-          products.map((product, index) => (
-            <Card key={product.identifier}>
-              <Text>{index++}</Text>
-              <Text>{product.price}</Text>
-              <Text>{product.raffle_id}</Text>
-            </Card>
-          ))
-        }
-      </>
-    )
-  }
+  // const ProductsCart = (products: IProducts[]) => {
+  //   return (
+  //     <>
+  //       {
+  //         products.map((product, index) => (
+  //           <Card key={product.identifier}>
+  //             <Text>{index++}</Text>
+  //             <Text>{product.price}</Text>
+  //             <Text>{product.raffle_id}</Text>
+  //           </Card>
+  //         ))
+  //       }
+  //     </>
+  //   )
+  // }
 
   const EmptyCartMessage = () => {
     return (

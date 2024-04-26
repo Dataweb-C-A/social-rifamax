@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Card, Button, Title, Text, Group, Image } from '@mantine/core';
 import { IconShoppingBag } from '@tabler/icons-react';
 import PublicNavbar from '../components/PublicNavbar';
-import RaffleCard from '../components/RaffleCard';
+// import RaffleCard from '../components/RaffleCard';
 
 function MP() {
   const [timeLeft, setTimeLeft] = useState({
