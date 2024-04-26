@@ -1,5 +1,5 @@
 import { useEffect, useState, ChangeEvent } from "react"
-import { Card, Button, createStyles, Text, Title, RingProgress, Group, Image, Grid, Modal, Stepper, ScrollArea, Divider, TextInput, Select, Checkbox, Accordion } from '@mantine/core'; import PublicNavbar from '../components/PublicNavbar';
+import { Card, Button, createStyles, Text, Title, RingProgress, Group, Image, Modal, Stepper, ScrollArea, Divider, TextInput, Select, Checkbox, Accordion } from '@mantine/core'; import PublicNavbar from '../components/PublicNavbar';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 import usadata from '../assets/Usastates.json'
 import vendata from '../assets/Venstate.json'
@@ -120,12 +120,12 @@ function MPI() {
                 }));
 
                 const usaIndex = countriesData.findIndex(country => country.name === "United States");
-                const colombiaIndex = countriesData.findIndex(country => country.name === "Colombia");
-                const venezuelaIndex = countriesData.findIndex(country => country.name === "Venezuela");
+                // const colombiaIndex = countriesData.findIndex(country => country.name === "Colombia");
+                // const venezuelaIndex = countriesData.findIndex(country => country.name === "Venezuela");
 
                 const usa = usaIndex !== -1 ? countriesData.splice(usaIndex, 1)[0] : undefined;
-                const colombia = countriesData.splice(colombiaIndex, 1)[0];
-                const venezuela = countriesData.splice(venezuelaIndex, 1)[0];
+                // const colombia = countriesData.splice(colombiaIndex, 1)[0];
+                // const venezuela = countriesData.splice(venezuelaIndex, 1)[0];
 
                 countriesData.sort((a, b) => a.name.localeCompare(b.name));
 

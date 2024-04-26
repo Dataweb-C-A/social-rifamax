@@ -1,4 +1,4 @@
-import { Button, Card, Grid, Text, Group, ScrollArea, SimpleGrid, Table, Badge, createStyles } from '@mantine/core';
+import { Button, Card, Grid, Text, Group, SimpleGrid, Table, Badge, createStyles } from '@mantine/core';
 import { IconCheck } from '@tabler/icons-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';

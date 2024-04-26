@@ -14,7 +14,7 @@ interface IRaffleCard {
 }
 
 function RaffleCard({ data }: IRaffleCard) {
-  const useStyles = createStyles((theme) => ({
+  const useStyles = createStyles(() => ({
     raffleCard: {
       width: '100%',
       height: 600,

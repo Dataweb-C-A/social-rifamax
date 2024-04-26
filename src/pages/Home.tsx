@@ -3,7 +3,7 @@ import { Carousel } from '@mantine/carousel';
 import HoverCard from "../components/HoverCard"
 import { useId, useState } from 'react';
 import Layout from "../Layout";
-import { IconDownload, IconEye, IconEyeClosed, IconWorld } from '@tabler/icons-react';
+import { IconEye, IconEyeClosed, IconWorld } from '@tabler/icons-react';
 import ReactApexChart, { Props as IApexChart } from 'react-apexcharts';
 import standarize from "../utils/standarize";
 
@@ -160,7 +160,7 @@ const useStyles = createStyles((theme) => ({
   }
 }))
 
-const HoverCarouselCard = ({ image, title, button, onClick }: IHoverCarousel) => {
+const HoverCarouselCard = ({ image, onClick }: IHoverCarousel) => {
   const [showImage, setShowImage] = useState<boolean>(false)
 
   return (
