@@ -18,7 +18,7 @@ const initialState: UserState = {
 };
 
 export const userSlice = createSlice({
-  name: "theme",
+  name: "user",
   initialState,
   reducers: {
     setUser: (state, action: PayloadAction<UserState>) => {

@@ -13,7 +13,7 @@ function AuthRoute({ }: Props) {
 
   const links = [
     { label: 'Inicio', href: '/', icon: <IconHome size="3rem" stroke={1.5} /> },
-    { label: 'Mis rifas', href: '/my-raffles', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
+    { label: 'Mis rifas', href: '/raffles', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
     { label: 'Mi perfil', href: '/profile', icon: <IconUserCircle size="3rem" stroke={1.5} /> }
   ]
 

@@ -6,6 +6,7 @@ import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
 import Raffles from './pages/MP'
 import Rafflesi from './pages/MPI'
+import DevStats from "./pages/DevStats";
 
 function App() {
   return (
@@ -14,8 +15,11 @@ function App() {
         <Route path="raffles" element={<Raffles />} />
         <Route path="rafflesi" element={<Rafflesi />} />
         <Route path="admin" element={<AuthRoute />}>
-          <Route path="login" element={<Login />} />
           <Route path="dashboard" element={<Home />} />
+        </Route>
+        <Route path="login" element={<Login />} />
+        <Route path="dev" element={<AuthRoute />}>
+          <Route path="stats" element={<DevStats />} />
         </Route>
         <Route path="/*" element={<ErrorPage errorCode={404} />} />
       </Switch>

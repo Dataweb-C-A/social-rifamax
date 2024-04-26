@@ -98,7 +98,7 @@ function ErrorPage({
             withButton && (
               <Button
                 fullWidth
-                onClick={() => window.location.href = '/'}
+                onClick={() => window.location.href = '/login'}
               >
                 Go to Home
               </Button>

@@ -6,7 +6,6 @@ interface IHero {
   button: string
 }
 
-
 function Hero({ description, image, button }: IHero) {
   const useStyles = createStyles((theme) => ({
     hero: {
@@ -26,7 +25,7 @@ function Hero({ description, image, button }: IHero) {
 
   return (
     <div className={classes.hero}>
-
+      { description }
     </div>
   )
 }
