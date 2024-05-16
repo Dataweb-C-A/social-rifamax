@@ -1,27 +1,16 @@
-import { Outlet/*, useNavigate*/ } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import { IconHome, IconPremiumRights, IconUserCircle } from '@tabler/icons-react'
-// import { useEffect } from 'react'
-// import useAuth from '../hooks/useAuth'
+import useAuth from '../hooks/useAuth'
 
-type Props = {}
-
-function AuthRoute({ }: Props) {
-  // const navigate = useNavigate()
-  // const { isAuthenticated } = useAuth()
-  // const token = localStorage.getItem('token')
+function AuthRoute() {
+  const { userIsAuthenticated } = useAuth()
 
   const links = [
     { label: 'Inicio', href: '/', icon: <IconHome size="3rem" stroke={1.5} /> },
     { label: 'Mis rifas', href: '/raffles', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
-    { label: 'Mi perfil', href: '/profile', icon: <IconUserCircle size="3rem" stroke={1.5} /> }
+    { label: 'Mi perfil', href: '/admin/profile', icon: <IconUserCircle size="3rem" stroke={1.5} /> }
   ]
-
-  // useEffect(() => {
-  //   if (isAuthenticated(token) === false) {
-  //     navigate('/')
-  //   }
-  // }, [])
 
   return (
     <>

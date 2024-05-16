@@ -1,11 +1,14 @@
 import { useEffect, useState, ChangeEvent } from "react"
-import { Card, Button, createStyles, Text, Title, RingProgress, Group, Image, Modal, Stepper, ScrollArea, Divider, TextInput, Select, Checkbox, Accordion } from '@mantine/core'; import PublicNavbar from '../components/PublicNavbar';
+import { Card, Button, createStyles, Text, Title, RingProgress, Group, Image, Modal, Stepper, ScrollArea, Divider, TextInput, Select, Checkbox, Accordion } from '@mantine/core';
+import PublicNavbar from '../components/PublicNavbar';
 import { IconEdit, IconCreditCardPay } from '@tabler/icons-react';
 import usadata from '../assets/Usastates.json'
 import vendata from '../assets/Venstate.json'
 import coldata from '../assets/Colstate.json'
 
 import axios from 'axios';
+import { addProduct } from "../store/reducers/cartSlice";
+import { useDispatch } from "react-redux";
 
 interface Country {
     name: string;
@@ -101,7 +104,15 @@ function MPI() {
     const [selectValue, setSelectValue] = useState<string>('');
     const [countries, setCountries] = useState<Country[]>([]);
     const [selectedCountry, setSelectedCountry] = useState<string>('');
+    const [selectedNumbers, setSelectedNumbers] = useState<number[]>([]);
 
+    const selectNumber = (number: number) => {
+        if (selectedNumbers.includes(number)) {
+            setSelectedNumbers(selectedNumbers.filter((num) => num !== number));
+        } else {
+            setSelectedNumbers([...selectedNumbers, number]);
+        }
+    }
 
     const [active, setActive] = useState(0);
     const nextStep = () => setActive((current) => (current < 2 ? current + 1 : current));
@@ -171,6 +182,8 @@ function MPI() {
             { value: 'sin estados', label: 'sin estados' },
         ];
     }
+
+    const dispatch = useDispatch();
 
     const selectOptions = countries.map(country => ({
         value: country.name,
@@ -615,8 +628,11 @@ function MPI() {
                         <div className={classes.ticketsList100}>
 
 
-                            {numbers.map((number, index) => (
-                                <Card shadow='xl' className={classes.tickets100} key={index} >
+                            {numbers.map((number: number, index: number) => (
+                                <Card shadow='xl' className={selectedNumbers.includes(number) ? classes.tickets100select : classes.tickets100} onClick={() => {
+                                    selectNumber(number)
+                                    dispatch(addProduct())
+                                }} key={index} >
                                     {number}
                                 </Card>
                             ))}

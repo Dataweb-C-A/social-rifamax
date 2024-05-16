@@ -1,22 +1,16 @@
-import { IconShoppingCart, /*IconTrash*/ } from "@tabler/icons-react"
-import { Divider, Popover, Text, createStyles, Button, Group,/* Card */} from "@mantine/core"
+import { IconShoppingCart, IconTrash } from "@tabler/icons-react"
+import { Divider, Popover, Text, createStyles, Button, Group, Card, ScrollArea } from "@mantine/core"
 import standarize from "../utils/standarize";
-import { useSelector } from "react-redux";
-import { RootState } from "../store";
-
-// interface IProducts {
-//   identifier: string;
-//   price: string;
-//   raffle_id: string;
-// }
+import { useCart } from "../hooks/useCart";
+import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   container: {
     border: `1px solid ${theme.colorScheme === 'dark' ? theme.colors.dark[6] : theme.colors.gray[2]}`,
     display: 'flex',
-    width: '150px',
+    width: '130px',
     marginTop: '4px',
-    padding: '10px',
+    padding: '5px',
     borderRadius: theme.radius.xs,
     justifyContent: 'space-evenly',
     ':hover': {
@@ -25,8 +19,8 @@ const useStyles = createStyles((theme) => ({
     }
   },
   cartWallet: {
-    fontSize: theme.fontSizes.sm,
-    marginTop: '3px',
+    fontSize: '13px',
+    marginTop: '4px',
     userSelect: 'none'
   },
   emptyCart: {
@@ -35,110 +29,116 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 700,
     fontSynthesis: 'bold',
     color: theme.colorScheme === 'dark' ? theme.colors.dark[0] : theme.colors.gray[7]
+  },
+  cartProduct: {
+    display: 'flex',
+    marginBottom: '10px',
+    gap: '10px',
+    background: theme.colorScheme === 'dark' ? theme.colors.dark[7] : theme.colors.gray[0],
+  },
+  cartIdentifier: {
+    width: '50px',
+    background: theme.colors.blue[7],
+    textAlign: 'center',
+    fontWeight: 700,
+    fontSize: '16px',
+    color: '#fff !important'
   }
 }))
 
-function Cart() {
+export default function Cart() {
   const { classes } = useStyles();
-  const selector = useSelector((state: RootState) => state.cart);
+  const { cart, totalValue, destroyCart, mock, addProduct } = useCart();
 
-  // const cart = [
-  //   {
-  //     identifier: '1',
-  //     price: '10000',
-  //     raffle_id: '1'
-  //   },
-  //   {
-  //     identifier: '2',
-  //     price: '10000',
-  //     raffle_id: '2'
-  //   }
-  // ] satisfies IProducts[];
+  const navigate = useNavigate()
 
-  // const ProductsCart = (products: IProducts[]) => {
-  //   return (
-  //     <>
-  //       {
-  //         products.map((product, index) => (
-  //           <Card key={product.identifier}>
-  //             <Text>{index++}</Text>
-  //             <Text>{product.price}</Text>
-  //             <Text>{product.raffle_id}</Text>
-  //           </Card>
-  //         ))
-  //       }
-  //     </>
-  //   )
-  // }
+  const redirect = () => {
+    navigate('/raffles')
+  }
+
+  const ProductsCart = () => {
+    return (
+      <>
+        <Text fz={14} italic c="dimmed" mb={10} fw={300}>
+          Cantidad: {cart().products.length}
+        </Text>
+        <ScrollArea h={cart().products.length > 0 ? 210 : 0} w="100%" type="always" scrollbarSize={5}>
+          {
+            cart().products.map((product, index: number) => (
+              <>
+                <Card key={index} className={classes.cartProduct}>
+                  <Card key={index} className={classes.cartIdentifier}>{index + 1}</Card>
+                  <div>
+                    <Text>4Runner 2023</Text>
+                    <Text c="dimmed" fz={10}>CANTIDAD: 1</Text>
+                    <Text c="dimmed" fz={10}>PRECIO:
+                      {
+                        standarize({
+                          value: product.price,
+                          country: 'en-US',
+                          currency: 'USD'
+                        })
+                      }
+                    </Text>
+                  </div>
+                </Card>
+              </>
+            ))
+          }
+        </ScrollArea>
+        {
+          cart().products.length > 0 && (
+            <Group w="100%" mt={-7}>
+              <Button w="150px" mt={10} onClick={mock}>Comprar</Button>
+              <Button w="60px" color="red" mt={10} onClick={destroyCart}><IconTrash /></Button>
+            </Group>
+          )
+        }
+      </>
+    )
+  }
 
   const EmptyCartMessage = () => {
     return (
       <>
-        <Divider variant="dashed" mt={13} h="13px" />
-        <Group position="center">
-          <Text className={classes.emptyCart} w="100%">
-            Tu carrito está vacío
-          </Text>
-        </Group>
-        <Divider variant="dashed" h="13px" />
-        <Button fullWidth>Seguir comprando</Button>
+        {
+          cart().products.length === 0 && (
+            <>
+              <Divider variant="dashed" h="13px" />
+              <Group position="center">
+                <Text className={classes.emptyCart} w="100%">
+                  Tu carrito está vacío
+                </Text>
+              </Group>
+              <Divider variant="dashed" h="13px" />
+              <Button fullWidth onClick={addProduct}>Seguir comprando</Button>
+            </>
+          )
+        }
       </>
     )
   }
 
   return (
-    <>
-      <Popover width={260} position="bottom" shadow="md" radius="xs">
-        <Popover.Target>
-          <div className={classes.container}>
-            <IconShoppingCart />
-            <Text className={classes.cartWallet}>
-              {
-                standarize({
-                  value: 0,
-                  country: 'en-US',
-                  currency: 'USD'
-                })
-              }
-            </Text>
-          </div>
-        </Popover.Target>
-        <Popover.Dropdown ml={-15}>
-          {/* <Card bg="dark" mb={10} style={{ display: 'flex', gap: '10px' }}>
-            <Card w="50px" bg='blue' ta="center" fw={700} fz={16}>1</Card>
-            <div>
-              <Text>4Runner 2023</Text>
-              <Text c="dimmed" fz={10}>CANTIDAD: 1</Text>
-              <Text c="dimmed" fz={10}>PRECIO: 5$</Text>
-            </div>
-          </Card>
-          <Card mb={10} bg="dark" style={{ display: 'flex', gap: '10px' }}>
-            <Card w="50px" bg='blue' ta="center" fw={700} fz={16}>1</Card>
-            <div>
-              <Text>4Runner 2023</Text>
-              <Text c="dimmed" fz={10}>CANTIDAD: 1</Text>
-              <Text c="dimmed" fz={10}>PRECIO: 5$</Text>
-            </div>
-          </Card>
-          <Card bg="dark" style={{ display: 'flex', gap: '10px' }}>
-            <Card w="50px" bg='blue' ta="center" fw={700} fz={16}>1</Card>
-            <div>
-              <Text>4Runner 2023</Text>
-              <Text c="dimmed" fz={10}>CANTIDAD: 1</Text>
-              <Text c="dimmed" fz={10}>PRECIO: 5$</Text>
-            </div>
-          </Card>
-          <Group w="100%">
-            <Button w="150px" mt={10}>Comprar</Button>
-            <Button w="60px" color="red" mt={10}><IconTrash /></Button>
-          </Group> */}
-          {
-            selector.cart.products.length === 0 && <EmptyCartMessage />
-          }
-        </Popover.Dropdown>
-      </Popover>
-    </>
+    <Popover width={260} position="bottom" shadow="md" radius="xs">
+      <Popover.Target>
+        <div className={classes.container}>
+          <IconShoppingCart />
+          <Text className={classes.cartWallet}>
+            {
+              standarize({
+                value: totalValue(),
+                country: 'en-US',
+                currency: 'USD'
+              })
+            }
+          </Text>
+        </div>
+      </Popover.Target>
+      <Popover.Dropdown ml={-15}>
+        <ProductsCart />
+        <EmptyCartMessage />
+      </Popover.Dropdown>
+    </Popover>
   )
 }
-
-export default Cart

@@ -1,7 +1,6 @@
 import { Group, createStyles } from "@mantine/core"
 import ThemeSwitcher from "./ThemeSwitcher";
 import RifamaxLogo from "./RifamaxLogo";
-import Cart from "./Cart";
 
 const useStyles = createStyles((theme) => ({
   navbar: {
@@ -72,7 +71,6 @@ function PublicNavbar({ }: IPublicNavbar) {
         <RifamaxLogo />
         <Group mt={-72}>
           <ThemeSwitcher />
-          <Cart />
         </Group>
       </Group>
     </nav>

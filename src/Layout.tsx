@@ -1,12 +1,14 @@
 import { ReactNode } from 'react'
-import { createStyles } from '@mantine/core'
+import { ScrollArea, createStyles } from '@mantine/core'
 
 interface ILayout {
   children?: ReactNode
   noOverlap?: boolean
+  full?: boolean
+  width?: string
 }
 
-function Layout({ children, noOverlap = false }: ILayout) {
+function Layout({ children, noOverlap = false, full = false, width = '1920px' }: ILayout) {
   const useStyles = createStyles((theme) => ({
     main: {
       display: 'flex',
@@ -15,8 +17,8 @@ function Layout({ children, noOverlap = false }: ILayout) {
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
     },
     container: {
-      height: 'calc(100vh - 75px)',
-      width: '1920px',
+      height: full ? '100vh' : 'calc(100vh - 75px)',
+      width: width,
       display: 'flex',
       padding: `${noOverlap ? 0 : '10px 10px'}`,
     }
@@ -27,7 +29,9 @@ function Layout({ children, noOverlap = false }: ILayout) {
   return (
     <main className={classes.main}>
       <div className={classes.container}>
-        {children}
+        <ScrollArea w="100%" h="calc(100%)" scrollbarSize={0}>
+          {children}
+        </ScrollArea>
       </div>
     </main>
   )
