@@ -14,7 +14,7 @@ export default function useAuth() {
 
   const login = (email: string, password: string) => {
     axios
-      .post(`https://api.rifa-max.com/admin/login`, {
+      .post(`https://api.rifa-max.com/social/login`, {
         email: email,
         password: password,
       })
