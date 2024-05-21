@@ -22,7 +22,7 @@ export default function useAuth() {
         localStorage.setItem("token", response.data.token);
         console.log('user', response.data)
         dispatch(setUser(response.data));
-        navigate('/admin/dashboard')
+        navigate('/admin/dashboard');
       })
       .catch(() => {
         notifications.show({
@@ -30,11 +30,25 @@ export default function useAuth() {
           title: <Text c="white" fw={700} fz={17} italic>No autorizado.</Text>,
           message: <Text c="white" fz={15}>Correo o contraseña incorrectos.</Text>,
           color: "red",
-          icon: <IconX />,
           withCloseButton: true,
           className: "my-notification-class",
-          style: { backgroundColor: "red" },
+          style: { backgroundColor: "red", height: '100px' },
           sx: { backgroundColor: "red" },
+          styles: (theme) => ({
+            root: {
+              backgroundColor: theme.colors.blue[6],
+              borderColor: theme.colors.blue[6],
+
+              '&::before': { backgroundColor: theme.white },
+            },
+
+            title: { color: theme.white },
+            description: { color: theme.white },
+            closeButton: {
+              color: theme.white,
+              '&:hover': { backgroundColor: theme.colors.red[7] },
+            },
+          }),
           loading: false,
         });
       });

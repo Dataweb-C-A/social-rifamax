@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { MantineProvider, Text } from '@mantine/core';
+import { MantineProvider, Text, rem } from '@mantine/core';
 import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
@@ -50,7 +50,7 @@ const AppWrapper = () => {
           bgDark: "#1A1B1E",
           bgLight: "#EEF5FF",
           defaultFontSize: "1rem"
-        }
+        },
       }}
     >
       <Notifications position="top-right" zIndex={999999} limit={3} />

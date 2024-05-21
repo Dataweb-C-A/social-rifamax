@@ -1,21 +1,28 @@
-// import LanguageSwitcher from "./components/LanguageSwitcher"
-import Home from "./pages/Home";
+import { Suspense, lazy } from 'react';
 import { Route, Routes as Switch } from "react-router-dom";
-import ErrorPage from "./pages/errors";
-import Login from "./pages/Login";
 import AuthRoute from "./components/AuthRoute";
-import Raffles from './pages/Raffles'
-import Rafflesi from './pages/MPI'
-import DevStats from "./pages/DevStats";
-import Passport from "./pages/Passport"
-import Profile from "./pages/Profile";
+import Loading from './components/Loading';
+
+const Home = lazy(() => import("./pages/Home"));
+const ErrorPage = lazy(() => import("./pages/errors"));
+const Login = lazy(() => import("./pages/Login"));
+const Raffles = lazy(() => import('./pages/Raffles'));
+const Rafflesi = lazy(() => import('./pages/MPI'));
+const DevStats = lazy(() => import("./pages/DevStats"));
+// const Passport = lazy(() => import("./pages/Passport"));
+const Profile = lazy(() => import("./pages/Profile"));
+const Gate = lazy(() => import("./pages/Gate"));
+const Coupon = lazy(() => import("./pages/Coupon"));
 
 function App() {
   return (
-    <>
+    <Suspense fallback={<Loading full message="Loading..." />}>
       <Switch>
-        <Route path="/" element={<Passport />} />
-        <Route path="raffles" element={<Raffles />} />
+        <Route path="/" element={<Coupon />} />
+        <Route path="raffles" element={<Raffles />}>
+        </Route>
+        <Route path="gate" element={<Gate />} />
+        <Route path="coupon" element={<Coupon />} />
         <Route path="rafflesi" element={<Rafflesi />} />
         <Route path="admin" element={<AuthRoute />}>
           <Route path="profile" element={<Profile />} />
@@ -27,8 +34,8 @@ function App() {
         </Route>
         <Route path="/*" element={<ErrorPage errorCode={404} />} />
       </Switch>
-    </>
+    </Suspense>
   )
 }
 
-export default App
+export default App;

@@ -8,14 +8,26 @@ function Raffles() {
     <>
       <PublicNavbar />
       <Layout noOverlap>
-        <Grid w="100%" justify="center" gutter={7} my={5} pl={5}>
-          <Grid.Col xs={6} lg={4} xl={3}>
-            <RaffleHero />
-          </Grid.Col>
-          <Grid.Col xs={6} lg={4} xl={3}>
-            <RaffleHero />
-          </Grid.Col>
-        </Grid>
+        <RaffleHero 
+          data={[
+            {
+              id: 1,
+              image: 'https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492',
+              title: 'Toyota 4Runner 2023',
+              tickets_count: 100,
+              draw_type: 'Fecha limite',
+              init_date: '2022-10-10'
+            },
+            {
+              id: 2,
+              image: 'https://www.motortrend.com/uploads/2022/05/2023-Toyota-4Runner-40th-Anniversary-Edition-1.jpg?fit=around%7C875:492',
+              title: 'Toyota 4Runner 2023',
+              tickets_count: 1000,
+              draw_type: 'Fecha limite',
+              init_date: '2022-10-10'
+            },
+          ]}
+        />
       </Layout>
     </>
   )
