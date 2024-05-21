@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev:storybook": "storybook dev -p 6006",
-    "dev": "MODE=web vite --mode=web",
+    "dev": "vite --mode=web",
     "build": "MODE=web tsc && vite build --mode=web",
     "build:storybook": "storybook build",
     "build:all": "tsc && vite build && storybook build",
