@@ -6,7 +6,7 @@ import { useMediaQuery } from '@mantine/hooks';
 import { useState, useRef } from "react";
 import axios from "axios"
 import { motion } from 'framer-motion'
-import { IconCreditCard, IconSearch, IconShoppingBag, IconUser } from "@tabler/icons-react";
+import { IconCreditCard, IconSearch, IconShoppingBag, IconTrash, IconUser } from "@tabler/icons-react";
 import { CouponForm } from "../layouts/coupon/Coupon.form";
 
 interface ICoupon {
@@ -89,6 +89,11 @@ function Coupon({ }: ICoupon) {
       width: '100%',
       height: 400
     },
+    removeButton: {
+      display: 'flex',
+      justifyContent: 'end',
+      marginBottom: '10px',
+    },
     cardQuantity: {
       width: '50px',
       height: '50px',
@@ -119,6 +124,15 @@ function Coupon({ }: ICoupon) {
   const addQuantity = (value: number) => {
     if (active === 0) {
       return setQuantity(quantity + value)
+    }
+  }
+
+  const decreaseQuantity = () => {
+    if (active === 0) {
+      if (quantity === 1) {
+        setTouchMove('-75%');
+      }
+      return setQuantity(quantity - 1)
     }
   }
 
@@ -176,6 +190,17 @@ function Coupon({ }: ICoupon) {
                           Precio: 21$
                         </Text>
                       </div>
+                      <div className={classes.removeButton}>
+                        <Button 
+                          color="red" 
+                          variant="subtle" 
+                          size="xs" 
+                          px={5}
+                          onClick={decreaseQuantity}
+                        >
+                          <IconTrash />
+                        </Button>
+                      </div>
                     </Group>
                     <Divider variant="dashed" my={10} />
                   </>
@@ -226,39 +251,33 @@ function Coupon({ }: ICoupon) {
           <div className={classes.couponContainer}>
             <div className={classes.couponWrapper}>
               <CouponSelector />
-              {
-                quantity > 0 && (
-                  <>
-                    <Card className={classes.paymentDesktop}>
-                      a
-                    </Card>
-                    <motion.div
-                      ref={constraintsRef}
-                      className={classes.paymentMobile}
-                      drag='y'
-                      dragConstraints={constraintsRef}
-                      initial={{
-                        bottom: '-95%'
-                      }}
-                      animate={{
-                        bottom: touchMove
-                      }}
-                      onDragEnd={(_, info) => {
-                        if (info.offset.y < 0) {
-                          setTouchMove('0%');
-                        } else {
-                          setTouchMove('-75%');
-                        }
-                      }}
-                    >
-                      <div className={classes.touchWrapper}>
-                        <div className={classes.touchBar} />
-                      </div>
-                      <Steps />
-                    </motion.div>
-                  </>
-                )
-              }
+              {/* <Card className={classes.paymentDesktop}>
+                a
+              </Card> */}
+              <motion.div
+                ref={constraintsRef}
+                className={classes.paymentMobile}
+                drag='y'
+                dragConstraints={constraintsRef}
+                initial={{
+                  bottom: '-95%'
+                }}
+                animate={{
+                  bottom: quantity === 0 ? '-100%' : touchMove
+                }}
+                onDragEnd={(_, info) => {
+                  if (info.offset.y < 0) {
+                    setTouchMove('0%');
+                  } else {
+                    setTouchMove('-75%');
+                  }
+                }}
+              >
+                <div className={classes.touchWrapper}>
+                  <div className={classes.touchBar} />
+                </div>
+                <Steps />
+              </motion.div>
             </div>
           </div>
         </Card>
