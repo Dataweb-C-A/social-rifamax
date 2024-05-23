@@ -165,6 +165,7 @@ function Coupon({ }: ICoupon) {
           icon={<IconShoppingBag size={16} />}
           label={<Text mt={3} fz={10}>Verificación</Text>}
           description={<Text fz={7} mt={-3} c="dimmed">Verifica compra</Text>}
+          allowNextStepsSelect={false}
         >
           <Text fz={18} mb={5} fw={700}>
             Verificar selección
@@ -191,10 +192,10 @@ function Coupon({ }: ICoupon) {
                         </Text>
                       </div>
                       <div className={classes.removeButton}>
-                        <Button 
-                          color="red" 
-                          variant="subtle" 
-                          size="xs" 
+                        <Button
+                          color="red"
+                          variant="subtle"
+                          size="xs"
                           px={5}
                           onClick={decreaseQuantity}
                         >
