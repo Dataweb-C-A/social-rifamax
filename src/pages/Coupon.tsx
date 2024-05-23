@@ -218,7 +218,7 @@ function Coupon({ }: ICoupon) {
   }
 
   return (
-    <section className={classes.main}>
+    <>
       <PublicNavbar />
       <Layout full noOverlap>
         <Card className={classes.mainCard}>
@@ -263,7 +263,7 @@ function Coupon({ }: ICoupon) {
           </div>
         </Card>
       </Layout>
-    </section>
+    </>
   )
 }
 
