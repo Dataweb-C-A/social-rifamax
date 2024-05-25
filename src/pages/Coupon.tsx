@@ -210,7 +210,7 @@ function Coupon({ }: ICoupon) {
           <Text fz={18} mb={5} fw={700}>
             Verificar selección
           </Text>
-          <ScrollArea mah={500} h={430} scrollbarSize={3}>
+          <ScrollArea mah={500} h={390} scrollbarSize={3}>
             {
               Array(quantity).fill(0).map((_, key) => {
                 return (
