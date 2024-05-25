@@ -1,5 +1,4 @@
-import { Anchor, createStyles, Button, Card, Text } from '@mantine/core';
-import { useNavigate } from 'react-router-dom';
+import { createStyles, Card } from '@mantine/core';
 import Layout from "../Layout"
 import PublicNavbar from "../components/PublicNavbar"
 import GateTicket from '../components/GateTicket';
@@ -32,8 +31,6 @@ const useStyles = createStyles((theme) => ({
 function Gate() {
   const { classes } = useStyles()
 
-  const navigate = useNavigate()
-
   return (
     <>
       <PublicNavbar />
@@ -42,7 +39,7 @@ function Gate() {
           <div className={classes.wrapper}>
             <div className={classes.gateGroup}>
               {
-                Array(100).fill(0).map((item: number) => {
+                Array(100).fill(0).map(() => {
                   return (
                     <GateTicket status="sold" value={1} />
                   )

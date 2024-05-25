@@ -2,7 +2,7 @@ import { IconShoppingCart, IconTrash } from "@tabler/icons-react"
 import { Divider, Popover, Text, createStyles, Button, Group, Card, ScrollArea } from "@mantine/core"
 import standarize from "../utils/standarize";
 import { useCart } from "../hooks/useCart";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   container: {
@@ -50,11 +50,11 @@ export default function Cart() {
   const { classes } = useStyles();
   const { cart, totalValue, destroyCart, mock, addProduct } = useCart();
 
-  const navigate = useNavigate()
+  // const navigate = useNavigate()
 
-  const redirect = () => {
-    navigate('/raffles')
-  }
+  // const redirect = () => {
+  //   navigate('/raffles')
+  // }
 
   const ProductsCart = () => {
     return (

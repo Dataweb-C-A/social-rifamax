@@ -1,4 +1,4 @@
-import { Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextInput } from '@mantine/core'
+import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
@@ -11,6 +11,7 @@ interface IForm {
   email: string
   prefix: string
   phone: string
+  direction: string
   termsOfService: boolean
 }
 
@@ -23,8 +24,8 @@ interface IUser {
 }
 
 interface ICouponForm {
-  nextStep? (): void;
-  prevStep? (): void;
+  nextStep(): void;
+  prevStep(): void;
 }
 
 function CouponForm({ nextStep, prevStep }: ICouponForm) {
@@ -49,7 +50,6 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       setUserData(response.data)
     }).catch(error => {
       console.log(error)
-      setIsUserExists(false)
       setUserData(null)
     })
   }
@@ -59,15 +59,15 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
     axios.post('https://api.rifa-max.com/x100/clients', {
       x100_client: {
         name: values.name + ' ' + values.lastName,
-        email: values.email,
-        phone: values.prefix + ' ' + values.phone,
-        pv: false,
-        is_integration: false
+        // email: values.email,
+        // phone: values.prefix + ' ' + values.phone,
+        // pv: false,
+        // is_integration: false
       }
-    }).then((res) => {
-      nextStep
+    }).then(() => {
+      nextStep()
     }).catch(() => {
-      setIsError(true)
+      nextStep()
     })
   }
 
@@ -77,6 +77,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       lastName: '',
       email: '',
       prefix: '+58',
+      direction: '',
       phone: '',
       termsOfService: false
     },
@@ -85,6 +86,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       lastName: (value: string) => (value.length < 4 ? 'El apellido es demasiado corto' : null),
       email: (value: string) => (!emailRegex.test(value) ? 'Correo electrónico no válido' : null),
       prefix: (value: string) => (!prefixRegex.test(value) ? 'Ingrese un prefijo válido' : null),
+      direction: (value: string) => (value.length < 16 ? 'Direccion invalida' : null),
       phone: (value: string) => (!phoneRegex.test(value) ? 'Ingrese un número de teléfono válido' : null),
       termsOfService: (value: boolean) => (!value ? 'Debe aceptar los términos y condiciones' : null)
     }
@@ -109,7 +111,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
   return (
     <form onSubmit={form.onSubmit(submit)}>
       <Text fz={18} fw={700}>
-        Buscar Cliente
+        Ingrese sus datos
       </Text>
       <Group w="100%" spacing={5}>
         <Select
@@ -145,7 +147,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
         </Button>
       </Group>
       {
-        !isUserExists && (
+        isUserExists && !userData && (
           <Box>
             <Group spacing={10} mt={10}>
               <TextInput
@@ -174,21 +176,36 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               error={form.errors.email}
               {...form.getInputProps('email')}
             />
+            <Textarea
+              mt={10}
+              label="Dirección"
+              placeholder='3167 Main Street Duluth, Georgia 30096'
+              size="xs"
+              error={form.errors.direction}
+              {...form.getInputProps('direction')}
+            />
             <Box mt={20}>
               <Checkbox
                 label="Acepto los términos y condiciones"
                 {...form.getInputProps('termsOfService', { type: 'checkbox' })}
               />
             </Box>
-            <Button
-              type="submit"
-              color="blue"
-              mt={20}
-              size="xs"
-              fullWidth
-            >
-              Enviar
-            </Button>
+            <Group position='center' mt={20}>
+              <Button
+                color="blue"
+                size="xs"
+                onClick={() => prevStep()}
+              >
+                Anterior
+              </Button>
+              <Button
+                type="submit"
+                color="blue"
+                size="xs"
+              >
+                Siguiente
+              </Button>
+            </Group>
             <motion.div
               initial={{
                 opacity: 0,
@@ -210,6 +227,12 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
         userData && (
           <>
             <Card ta="center" w="100%" mt={15}>
+              <Text c="dimmed" mb={-7} fz={10} fw={300}>
+                ¿No son tus datos?
+              </Text>
+              <Anchor fz={10} fw={300} onClick={() => setUserData(null)}>
+                Presiona aquí para cambiarlos
+              </Anchor>
               <Group position='center' my={10}>
                 <Avatar radius="lg" size="xl" color='blue' />
               </Group>
@@ -224,8 +247,8 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               </Text>
             </Card>
             <Group spacing={5} mt={10} position="center">
-              <Button size="xs" onClick={prevStep}>Anterior</Button>
-              <Button size="xs" onClick={nextStep}>Siguiente</Button>
+              <Button size="xs" onClick={() => prevStep()}>Anterior</Button>
+              <Button size="xs" onClick={() => nextStep()}>Siguiente</Button>
             </Group>
           </>
         )

@@ -1,10 +1,10 @@
 import { Outlet } from 'react-router-dom'
 import Navbar from './Navbar'
 import { IconHome, IconPremiumRights, IconUserCircle } from '@tabler/icons-react'
-import useAuth from '../hooks/useAuth'
+// import useAuth from '../hooks/useAuth'
 
 function AuthRoute() {
-  const { userIsAuthenticated } = useAuth()
+  // const { userIsAuthenticated } = useAuth()
 
   const links = [
     { label: 'Inicio', href: '/', icon: <IconHome size="3rem" stroke={1.5} /> },

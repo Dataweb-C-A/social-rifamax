@@ -1,16 +1,16 @@
 import { useDispatch, useSelector } from "react-redux";
-import { clearProducts, addProduct, setProducts } from "../store/reducers/cartSlice";
+import { clearProducts } from "../store/reducers/cartSlice";
 import { RootState } from "../store";
 import { Text } from "@mantine/core";
 import { IconCheck } from "@tabler/icons-react";
 import { notifications } from "@mantine/notifications";
 
-interface IProduct {
-  identifier: string;
-  raffle_id: number;
-  product_id: number;
-  price: number;
-}
+// interface IProduct {
+//   identifier: string;
+//   raffle_id: number;
+//   product_id: number;
+//   price: number;
+// }
 
 export function useCart() {
   const dispatch = useDispatch();
@@ -30,7 +30,7 @@ export function useCart() {
   }
 
   const addProduct = () => {
-    dispatch(setProducts(products));
+    // dispatch(setProducts(products));
 
     notifications.show({
       autoClose: 5000,

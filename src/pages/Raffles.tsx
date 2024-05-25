@@ -1,14 +1,13 @@
 import RaffleHero from "../components/RaffleHero"
 import Layout from "../Layout"
 import PublicNavbar from "../components/PublicNavbar"
-import { Grid } from "@mantine/core"
 
 function Raffles() {
   return (
     <>
       <PublicNavbar />
       <Layout noOverlap>
-        <RaffleHero 
+        <RaffleHero
           data={[
             {
               id: 1,

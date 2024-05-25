@@ -1,4 +1,4 @@
-import { Button, Card, createStyles, Grid, Progress, Text } from "@mantine/core"
+import { Card, createStyles, Grid, Progress, Text } from "@mantine/core"
 import { motion } from 'framer-motion'
 import { useState } from "react";
 
@@ -52,7 +52,7 @@ const useStyles = createStyles((theme) => ({
   },
   infoRaffle: {
     display: 'flex',
-    flexWrap: 'no-wrap',
+    flexWrap: 'nowrap',
     borderRadius: '7px',
     height: 270,
     margin: '0px 5px !important',

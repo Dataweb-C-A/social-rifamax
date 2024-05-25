@@ -1,6 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
-import { MantineProvider, Text, rem } from '@mantine/core';
+import { MantineProvider, Text } from '@mantine/core';
 import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'

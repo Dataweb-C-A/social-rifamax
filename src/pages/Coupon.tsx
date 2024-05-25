@@ -1,13 +1,13 @@
-import { Breadcrumbs, Anchor, Card, createStyles, Select, ActionIcon, TextInput, Title, Group, Text, Stepper, ScrollArea, Button, Divider } from "@mantine/core"
+import { Breadcrumbs, Anchor, Card, createStyles, Title, Group, Text, Stepper, ScrollArea, Button, Divider, Avatar } from "@mantine/core"
 import Layout from "../Layout"
 import PublicNavbar from "../components/PublicNavbar"
 import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from '@mantine/hooks';
 import { useState, useRef } from "react";
-import axios from "axios"
 import { motion } from 'framer-motion'
-import { IconCreditCard, IconSearch, IconShoppingBag, IconTrash, IconUser } from "@tabler/icons-react";
+import { IconCheck, IconCreditCard, IconMinus, IconPlus, IconShoppingBag, IconTrash, IconUser } from "@tabler/icons-react";
 import { CouponForm } from "../layouts/coupon/Coupon.form";
+import Checkout from "../components/Checkout";
 
 interface ICoupon {
 
@@ -98,6 +98,33 @@ function Coupon({ }: ICoupon) {
       width: '50px',
       height: '50px',
       background: theme.colors.blue[6]
+    },
+    couponSelector: {
+      backgroundImage: 'url(https://api.rifa-max.com/uploads/x100/raffle/ad/28/Hyundai-Santa-Fe-2023-10.jpg)',
+      backgroundPosition: 'center center',
+      backgroundSize: 'cover',
+    },
+    buttonBuy: {
+      position: 'absolute',
+      bottom: 10,
+      right: 0,
+      borderRadius: '3px 0 0 3px'
+    },
+    raffleLabel: {
+      marginTop: -10,
+      color: 'black',
+      fontSize: 13.5,
+      fontWeight: 600,
+      textAlign: 'center',
+    },
+    minusButton: {
+      borderRadius: '3px 0 0 3px'
+    },
+    quantityCounter: {
+      borderRadius: 0
+    },
+    plusButton: {
+      borderRadius: '0 3px 3px 0'
     }
   }))
 
@@ -146,31 +173,44 @@ function Coupon({ }: ICoupon) {
   )
 
   const CouponSelector = () => (
-    Array(10).fill(1).map((_, key) => {
-      return (
-        <Card
-          className={classes.couponCard}
-          onClick={() => addQuantity(key + 1)}
-        >
-          <Text>{key + 1}</Text>
-        </Card>
-      )
-    })
+    <Card
+      className={classes.couponSelector}
+      w="100%"
+      h={180}
+    >
+      <Text
+        className={classes.raffleLabel}
+      >
+        Hyundai Santa Fe 2024
+      </Text>
+      <Button
+        size="xs"
+        className={classes.buttonBuy}
+        variant="gradient"
+        onClick={() => addQuantity(1)}
+      >
+        Comprar
+      </Button>
+    </Card>
   )
 
   const Steps = () => {
     return (
-      <Stepper size='xs' mt={20} px={10} active={active} onStepClick={setActive}>
+      <Stepper
+        size='xs'
+        mt={20}
+        px={10}
+        active={active}
+        allowNextStepsSelect={false}
+      >
         <Stepper.Step
           icon={<IconShoppingBag size={16} />}
           label={<Text mt={3} fz={10}>Verificación</Text>}
-          description={<Text fz={7} mt={-3} c="dimmed">Verifica compra</Text>}
-          allowNextStepsSelect={false}
         >
           <Text fz={18} mb={5} fw={700}>
             Verificar selección
           </Text>
-          <ScrollArea mah={500} scrollbarSize={3}>
+          <ScrollArea mah={500} h={500} scrollbarSize={3}>
             {
               Array(quantity).fill(0).map((_, key) => {
                 return (
@@ -182,7 +222,7 @@ function Coupon({ }: ICoupon) {
                       <div>
 
                         <Text fw={500} fz={15}>
-                          Rifa por Hyundai Santa Fe 2023
+                          Rifa de Hyundai Santa Fe 2023
                         </Text>
                         <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
                           Cantidad: 1
@@ -210,12 +250,40 @@ function Coupon({ }: ICoupon) {
             }
           </ScrollArea>
           <Group position="apart">
-            <Text c='dimmed' fz={12} italic fw={300}>
-              Cantidad: {quantity}
-            </Text>
-            <Text fz={12} ta="end" fw={300}>
-              Total a pagar: {quantity * 21}$
-            </Text>
+            <Group w="50%" spacing={0}>
+              <Button
+                size="xs"
+                px={5}
+                className={classes.minusButton}
+                onClick={() => decreaseQuantity()}
+              >
+                <IconMinus size={13} />
+              </Button>
+              <Card
+                px={10}
+                py={2.5}
+                className={classes.quantityCounter}
+              >
+                {quantity}
+              </Card>
+              <Button
+                size="xs"
+                px={5}
+                className={classes.plusButton}
+                onClick={() => addQuantity(1)}
+              >
+                <IconPlus size={13} />
+              </Button>
+            </Group>
+            <div>
+              <Text fz={11} ta="end" italic fw={700}>
+                Total a pagar:
+              </Text>
+              <Text fz={14} ta="end" fw={300}>
+                {quantity * 21}$
+              </Text>
+
+            </div>
           </Group>
           <Group spacing={5} mt={20} position="center">
             <Button onClick={prevStep} disabled={active === 0} size="xs">Anterior</Button>
@@ -225,19 +293,81 @@ function Coupon({ }: ICoupon) {
         <Stepper.Step
           icon={<IconUser size={16} />}
           label={<Text mt={3} fz={10}>Información</Text>}
-          description={<Text mt={-3} fz={7} c="dimmed">Datos personales</Text>}
         >
-          <CouponForm />
+          <CouponForm
+            nextStep={() => setActive(2)}
+            prevStep={() => setActive(0)}
+          />
         </Stepper.Step>
         <Stepper.Step
           icon={<IconCreditCard size={16} />}
           label={<Text mt={3} fz={10}>Comprar</Text>}
-          description={<Text mt={-3} fz={7} c="dimmed">Realizar pago</Text>}
         >
-          Step 3 content: Get full access
+          <Checkout 
+            paymentMethods={['Pago Móvil', 'Zelle']}
+            quantity={quantity}
+            onComplete={() => nextStep()}
+          />
         </Stepper.Step>
         <Stepper.Completed>
-          Completed, click back button to get to previous step
+          <Card>
+            <Group position="apart">
+              <Text c="dimmed" italic fz={12}>
+                ORD-ABDU1782930
+              </Text>
+              <Text c="dimmed" italic fz={12}>
+                Cantidad: {quantity}
+              </Text>
+            </Group>
+            <Group my={20} position="center">
+              <Avatar color="teal" size="xl" radius='xl'>
+                <IconCheck />
+              </Avatar>
+            </Group>
+            <Text ta="center" mb={20} fz={20} fw={700}>
+              ¡Compra exitosa!
+            </Text>
+            <ScrollArea mah={350} h={350} scrollbarSize={3} mb={20}>
+            {
+              Array(quantity).fill(0).map((_, key) => {
+                return (
+                  <>
+                    <Group>
+                      <Card ta="center" className={classes.cardQuantity}>
+                        {key + 1}
+                      </Card>
+                      <div>
+
+                        <Text fw={500} fz={15}>
+                          Rifa de Hyundai Santa Fe 2023
+                        </Text>
+                        <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
+                          Cantidad: 1
+                        </Text>
+                        <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
+                          Precio: 21$
+                        </Text>
+                      </div>
+                      <div className={classes.removeButton}>
+                      </div>
+                    </Group>
+                    <Divider variant="dashed" my={10} />
+                  </>
+                )
+              })
+            }
+          </ScrollArea>
+          <Button 
+            fullWidth
+            onClick={() => {
+              setTouchMove('-75%');
+              setQuantity(0)
+              setActive(0)
+            }}
+          >
+            Finalizado
+          </Button>
+          </Card>
         </Stepper.Completed>
       </Stepper>
     )
