@@ -133,7 +133,7 @@ function Coupon({ }: ICoupon) {
   const constraintsRef = useRef(null);
 
   const [quantity, setQuantity] = useState<number>(0)
-  const [touchMove, setTouchMove] = useState<string>('-75%');
+  const [touchMove, setTouchMove] = useState<string>('0%');
   const [active, setActive] = useState<number>(0);
 
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
@@ -210,7 +210,7 @@ function Coupon({ }: ICoupon) {
           <Text fz={18} mb={5} fw={700}>
             Verificar selección
           </Text>
-          <ScrollArea mah={500} h={500} scrollbarSize={3}>
+          <ScrollArea mah={500} h={430} scrollbarSize={3}>
             {
               Array(quantity).fill(0).map((_, key) => {
                 return (
