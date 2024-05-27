@@ -1,4 +1,4 @@
-import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
+import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, NumberInput, Select, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
@@ -11,8 +11,11 @@ interface IForm {
   email: string
   prefix: string
   phone: string
-  direction: string
-  termsOfService: boolean
+  country: string;
+  direction: string;
+  city: string;
+  zip_code: string | number;
+  termsOfService: boolean;
 }
 
 interface IUser {
@@ -78,6 +81,9 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       email: '',
       prefix: '+58',
       direction: '',
+      country: 'USA',
+      city: '',
+      zip_code: '',
       phone: '',
       termsOfService: false
     },
@@ -88,6 +94,8 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       prefix: (value: string) => (!prefixRegex.test(value) ? 'Ingrese un prefijo válido' : null),
       direction: (value: string) => (value.length < 16 ? 'Direccion invalida' : null),
       phone: (value: string) => (!phoneRegex.test(value) ? 'Ingrese un número de teléfono válido' : null),
+      city: (value: string) => (value.length < 3 ? 'Ciudad invalida' : null),
+      zip_code: (value: string | number) => (value.toString().length < 4 ? 'Código postal invalido' : null),
       termsOfService: (value: boolean) => (!value ? 'Debe aceptar los términos y condiciones' : null)
     }
   })
@@ -176,10 +184,48 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               error={form.errors.email}
               {...form.getInputProps('email')}
             />
+            <Select
+              data={[
+                {
+                  value: 'USA', label: 'Estados Unidos'
+                },
+                {
+                  value: 'Venezuela', label: 'Venezuela'
+                },
+                {
+                  value: 'Colombia', label: 'Colombia'
+                }
+              ]}
+              size="xs"
+              mt={10}
+              placeholder='Estados Unidos'
+              label="País de residencia"
+              error={form.errors.country}
+              {...form.getInputProps('country')}
+            />
+            <Group spacing={10} mt={10}>
+              <TextInput
+                label="Código postal"
+                w='calc(50% - 5px)'
+                type='number'
+                size="xs"
+                placeholder="4005"
+                error={form.errors.zip_code}
+                {...form.getInputProps('zip_code')}
+              />
+              <TextInput
+                label="Provincia"
+                w='calc(50% - 5px)'
+                size="xs"
+                placeholder="Georgia"
+                error={form.errors.city}
+                {...form.getInputProps('city')}
+              />
+            </Group>
             <Textarea
               mt={10}
               label="Dirección"
-              placeholder='3167 Main Street Duluth, Georgia 30096'
+              placeholder='Main Street Duluth'
               size="xs"
               error={form.errors.direction}
               {...form.getInputProps('direction')}
@@ -188,6 +234,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               <Checkbox
                 label="Acepto los términos y condiciones"
                 {...form.getInputProps('termsOfService', { type: 'checkbox' })}
+                size="xs"
               />
             </Box>
             <Group position='center' mt={20}>

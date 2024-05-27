@@ -16,6 +16,12 @@ interface ICoupon {
 
 function Coupon({ }: ICoupon) {
   const isMobile = useMediaQuery(`(max-width: 900px)`);
+
+  const [illumination, setIllumination] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(0)
+  const [touchMove, setTouchMove] = useState<string>('0%');
+  const [active, setActive] = useState<number>(0);
+
   const useStyles = createStyles((theme) => ({
     main: {},
     mainCard: {
@@ -76,12 +82,20 @@ function Coupon({ }: ICoupon) {
     touchWrapper: {
       display: 'flex',
       width: '100%',
+      height: '20px',
       justifyContent: 'center',
     },
     touchBar: {
       width: 40,
       height: '3px',
-      backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[4] : theme.colors.gray[6],
+      backgroundColor:
+        illumination
+          ? theme.colorScheme === 'dark'
+            ? theme.colors.dark[1]
+            : theme.colors.gray[9]
+          : theme.colorScheme === 'dark'
+            ? theme.colors.dark[4]
+            : theme.colors.gray[6],
       borderRadius: '10px',
       marginTop: '6px'
     },
@@ -131,10 +145,6 @@ function Coupon({ }: ICoupon) {
   const { classes } = useStyles()
   const navigate = useNavigate()
   const constraintsRef = useRef(null);
-
-  const [quantity, setQuantity] = useState<number>(0)
-  const [touchMove, setTouchMove] = useState<string>('0%');
-  const [active, setActive] = useState<number>(0);
 
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
@@ -303,7 +313,7 @@ function Coupon({ }: ICoupon) {
           icon={<IconCreditCard size={16} />}
           label={<Text mt={3} fz={10}>Comprar</Text>}
         >
-          <Checkout 
+          <Checkout
             paymentMethods={['Pago Móvil', 'Zelle']}
             quantity={quantity}
             onComplete={() => nextStep()}
@@ -328,48 +338,48 @@ function Coupon({ }: ICoupon) {
               ¡Compra exitosa!
             </Text>
             <Text ta="center" mb={20} fz={15} fw={700}>
-             Se le enviara el recibo al verificar su pago
+              Se le enviara el recibo al verificar su pago
             </Text>
-            <ScrollArea mah={350} h={250} scrollbarSize={3} mb={20}>
-            {
-              Array(quantity).fill(0).map((_, key) => {
-                return (
-                  <>
-                    <Group>
-                      <Card ta="center" className={classes.cardQuantity}>
-                        {key + 1}
-                      </Card>
-                      <div>
+            <ScrollArea mah={210} h={210} scrollbarSize={3} mb={20}>
+              {
+                Array(quantity).fill(0).map((_, key) => {
+                  return (
+                    <>
+                      <Group>
+                        <Card ta="center" className={classes.cardQuantity}>
+                          {key + 1}
+                        </Card>
+                        <div>
 
-                        <Text fw={500} fz={15}>
-                          Rifa de Hyundai Santa Fe 2023
-                        </Text>
-                        <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
-                          Cantidad: 1
-                        </Text>
-                        <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
-                          Precio: 21$
-                        </Text>
-                      </div>
-                      <div className={classes.removeButton}>
-                      </div>
-                    </Group>
-                    <Divider variant="dashed" my={10} />
-                  </>
-                )
-              })
-            }
-          </ScrollArea>
-          <Button 
-            fullWidth
-            onClick={() => {
-              setTouchMove('-75%');
-              setQuantity(0)
-              setActive(0)
-            }}
-          >
-            Finalizado
-          </Button>
+                          <Text fw={500} fz={15}>
+                            Rifa de Hyundai Santa Fe 2023
+                          </Text>
+                          <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
+                            Cantidad: 1
+                          </Text>
+                          <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
+                            Precio: 21$
+                          </Text>
+                        </div>
+                        <div className={classes.removeButton}>
+                        </div>
+                      </Group>
+                      <Divider variant="dashed" my={10} />
+                    </>
+                  )
+                })
+              }
+            </ScrollArea>
+            <Button
+              fullWidth
+              onClick={() => {
+                setTouchMove('-75%');
+                setQuantity(0)
+                setActive(0)
+              }}
+            >
+              Finalizado
+            </Button>
           </Card>
         </Stepper.Completed>
       </Stepper>
@@ -399,17 +409,39 @@ function Coupon({ }: ICoupon) {
                 animate={{
                   bottom: quantity === 0 ? '-100%' : touchMove
                 }}
-                onDragEnd={(_, info) => {
-                  if (info.offset.y < 0) {
-                    setTouchMove('0%');
-                  } else {
-                    setTouchMove('-75%');
-                  }
-                }}
               >
-                <div className={classes.touchWrapper}>
-                  <div className={classes.touchBar} />
-                </div>
+                <motion.div
+                  className={classes.touchWrapper}
+                  drag='y'
+                  dragMomentum={false}
+                  dragTransition={{
+                    bounceDamping: 10,
+                    bounceStiffness: 100,
+                    max: 0,
+                    min: 0,
+                    restDelta: 100,
+                    from: 0,
+                    power: 0,
+                    timeConstant: 0.01,
+
+                  }}
+                  onDragStart={() => {
+                    setIllumination(true)
+                  }}
+                  ref={constraintsRef}
+                  dragConstraints={constraintsRef}
+                  dragSnapToOrigin
+                  onDragEnd={(_, info) => {
+                    setIllumination(false)
+                    if (info.offset.y < 0) {
+                      setTouchMove('0%');
+                    } else {
+                      setTouchMove('-75%');
+                    }
+                  }}
+                >
+                  <motion.div className={classes.touchBar} />
+                </motion.div>
                 <Steps />
               </motion.div>
             </div>
