@@ -340,7 +340,7 @@ function Coupon({ }: ICoupon) {
             <Text ta="center" mb={20} fz={15} fw={700}>
               Se le enviara el recibo al verificar su pago
             </Text>
-            <ScrollArea mah={210} h={210} scrollbarSize={3} mb={20}>
+            <ScrollArea mah={190} h={190} scrollbarSize={3} mb={20}>
               {
                 Array(quantity).fill(0).map((_, key) => {
                   return (

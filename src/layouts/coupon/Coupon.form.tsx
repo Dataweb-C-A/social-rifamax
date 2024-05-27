@@ -203,7 +203,23 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               error={form.errors.country}
               {...form.getInputProps('country')}
             />
+            <Textarea
+              mt={10}
+              label="Dirección"
+              placeholder='Main Street Duluth'
+              size="xs"
+              error={form.errors.direction}
+              {...form.getInputProps('direction')}
+            />
             <Group spacing={10} mt={10}>
+              <TextInput
+                label="Provincia"
+                w='calc(50% - 5px)'
+                size="xs"
+                placeholder="Georgia"
+                error={form.errors.city}
+                {...form.getInputProps('city')}
+              />
               <TextInput
                 label="Código postal"
                 w='calc(50% - 5px)'
@@ -213,23 +229,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
                 error={form.errors.zip_code}
                 {...form.getInputProps('zip_code')}
               />
-              <TextInput
-                label="Provincia"
-                w='calc(50% - 5px)'
-                size="xs"
-                placeholder="Georgia"
-                error={form.errors.city}
-                {...form.getInputProps('city')}
-              />
             </Group>
-            <Textarea
-              mt={10}
-              label="Dirección"
-              placeholder='Main Street Duluth'
-              size="xs"
-              error={form.errors.direction}
-              {...form.getInputProps('direction')}
-            />
             <Box mt={20}>
               <Checkbox
                 label="Acepto los términos y condiciones"
