@@ -1,4 +1,4 @@
-import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, NumberInput, Select, Text, TextInput, Textarea } from '@mantine/core'
+import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
