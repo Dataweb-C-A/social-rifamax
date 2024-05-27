@@ -1,15 +1,16 @@
 import { Anchor, Box, Button, Card, Group, Radio, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
 
-const allPayments = ['Pago Móvil', 'Zelle']
+const allPayments = ['Pago Móvil', 'Zelle', 'Stripe']
 
 const parseToFile: Record<IPaymentType, string> = {
   'Pago Móvil': 'PagoMovil',
-  'Zelle': 'Zelle'
+  'Zelle': 'Zelle',
+  'Stripe': 'Stripe'
 }
 
 interface ICheckout {
-  paymentMethods: ('Pago Móvil' | 'Zelle')[];
+  paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
   quantity: number;
   onComplete: () => void;
 }
@@ -98,7 +99,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                   <>
                     <Text fw={300} fz={15} ta="end">
                       {
-                        paymentSelected === 'Zelle' ? `$${quantity * 21}` : `VES ${((quantity * 21) * 36.7).toFixed(2)}`
+                        paymentSelected === 'Pago Móvil' ? `VES ${((quantity * 21) * 36.7).toFixed(2)}` : `$${quantity * 21}`
                       }
                     </Text>
                     <Text italic fw={300} c="dimmed" fz={10} ta="end">
