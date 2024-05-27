@@ -1,21 +1,12 @@
 import { Anchor, Box, Button, Card, Group, Radio, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
-
-const allPayments = ['Pago Móvil', 'Zelle', 'Stripe']
-
-const parseToFile: Record<IPaymentType, string> = {
-  'Pago Móvil': 'PagoMovil',
-  'Zelle': 'Zelle',
-  'Stripe': 'Stripe'
-}
+import { useFeatureFlagEnabled } from 'posthog-js/react'
 
 interface ICheckout {
   paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
   quantity: number;
   onComplete: () => void;
 }
-
-type IPaymentType = typeof allPayments[number];
 
 interface IPaymentModuleProps {
   onPay: () => void;
@@ -26,6 +17,23 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   const [paymentSelected, setPaymentSelected] = useState<IPaymentType | ''>('')
   const [PaymentModule, setPaymentModule] = useState<React.FC<IPaymentModuleProps> | null>(null);
   const [isProceed, setIsProceed] = useState<boolean>(false)
+
+  const flagEnabled = useFeatureFlagEnabled('stripe-to-payments')
+
+  const allPayments = ['Pago Móvil', 'Zelle']
+
+  if (flagEnabled) {
+    allPayments.push('Stripe')
+  }
+
+  type IPaymentType = typeof allPayments[number];
+
+  const parseToFile: Record<IPaymentType, string> = {
+    'Pago Móvil': 'PagoMovil',
+    'Zelle': 'Zelle',
+    'Stripe': 'Stripe'
+  }
+
 
   const dynamicTitle = paymentSelected ? 'Proceda con el pago' : 'Seleccione un método de pago'
 
@@ -47,10 +55,10 @@ function Checkout({ quantity, onComplete }: ICheckout) {
         >
           {
             allPayments.map((payment: IPaymentType) => {
-              return(
+              return (
                 <Box py={5}>
-                  <Radio 
-                    value={payment} 
+                  <Radio
+                    value={payment}
                     label={payment}
                   />
                 </Box>
@@ -59,9 +67,9 @@ function Checkout({ quantity, onComplete }: ICheckout) {
           }
         </Radio.Group>
         <Group position="right">
-          <Button 
-            mt={10} 
-            size="xs" 
+          <Button
+            mt={10}
+            size="xs"
             disabled={paymentSelected === ''}
             onClick={() => setIsProceed(true)}
           >
@@ -93,7 +101,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                   Cambiar método de pago
                 </Anchor>
               </Group>
-              <PaymentModule 
+              <PaymentModule
                 onPay={onComplete}
                 children={
                   <>
