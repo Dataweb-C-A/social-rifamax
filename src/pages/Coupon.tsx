@@ -1,5 +1,6 @@
 import { Breadcrumbs, Anchor, Card, createStyles, Title, Group, Text, Stepper, ScrollArea, Button, Divider, Avatar } from "@mantine/core"
 import Layout from "../Layout"
+import { useTranslation } from 'react-i18next';
 import PublicNavbar from "../components/PublicNavbar"
 import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from '@mantine/hooks';
@@ -146,12 +147,13 @@ function Coupon({ }: ICoupon) {
   const navigate = useNavigate()
   const constraintsRef = useRef(null);
 
+  const { t } = useTranslation();
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
 
   const items = [
-    { title: 'Rifas', href: '/raffles' },
-    { title: 'Cupones', href: '/coupon' },
+    { title: t('raffles'), href: '/raffles' },
+    { title: t('couponstitle'), href: '/coupon' },
   ].map((item, index) => (
     <Anchor fz={17} mt={-2} onClick={() => navigate(item.href)} key={index}>
       {item.title}
@@ -176,7 +178,11 @@ function Coupon({ }: ICoupon) {
   const SuperiorHead = () => (
     <Group position="apart">
       <div>
-        <Title order={2} mb={10}>Cupones</Title>
+
+
+        <Title order={2} mb={10}>
+          {t('couponstitle')}
+        </Title>
       </div>
       <Breadcrumbs>{items}</Breadcrumbs>
     </Group>
@@ -199,7 +205,8 @@ function Coupon({ }: ICoupon) {
         variant="gradient"
         onClick={() => addQuantity(1)}
       >
-        Comprar
+
+        {t('buy')}
       </Button>
     </Card>
   )
@@ -215,10 +222,10 @@ function Coupon({ }: ICoupon) {
       >
         <Stepper.Step
           icon={<IconShoppingBag size={16} />}
-          label={<Text mt={3} fz={10}>Verificación</Text>}
+          label={<Text mt={3} fz={10}>{t('Verification')}</Text>}
         >
           <Text fz={18} mb={5} fw={700}>
-            Verificar selección
+            {t('Verifyselection')}
           </Text>
           <ScrollArea mah={500} h={390} scrollbarSize={3}>
             {
@@ -235,10 +242,11 @@ function Coupon({ }: ICoupon) {
                           Rifa de Hyundai Santa Fe 2023
                         </Text>
                         <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
-                          Cantidad: 1
+
+                          {t('quantity')}: 1
                         </Text>
                         <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
-                          Precio: 21$
+                          {t('prize')}: 21$
                         </Text>
                       </div>
                       <div className={classes.removeButton}>
@@ -287,7 +295,7 @@ function Coupon({ }: ICoupon) {
             </Group>
             <div>
               <Text fz={11} ta="end" italic fw={700}>
-                Total a pagar:
+              {t('allpay')}:
               </Text>
               <Text fz={14} ta="end" fw={300}>
                 {quantity * 21}$
@@ -296,22 +304,23 @@ function Coupon({ }: ICoupon) {
             </div>
           </Group>
           <Group spacing={5} mt={20} position="center">
-            <Button onClick={prevStep} disabled={active === 0} size="xs">Anterior</Button>
-            <Button onClick={nextStep} size="xs">Siguiente</Button>
+            <Button onClick={prevStep} disabled={active === 0} size="xs"> {t('back')}</Button>
+            <Button onClick={nextStep} size="xs">  {t('next')}</Button>
           </Group>
         </Stepper.Step>
         <Stepper.Step
           icon={<IconUser size={16} />}
-          label={<Text mt={3} fz={10}>Información</Text>}
+          label={<Text mt={3} fz={10}>{t('Information')}</Text>}
         >
           <CouponForm
             nextStep={() => setActive(2)}
             prevStep={() => setActive(0)}
           />
         </Stepper.Step>
+
         <Stepper.Step
           icon={<IconCreditCard size={16} />}
-          label={<Text mt={3} fz={10}>Comprar</Text>}
+          label={<Text mt={3} fz={10}>{t('buy')}</Text>}
         >
           <Checkout
             paymentMethods={['Pago Móvil', 'Zelle']}
@@ -319,6 +328,7 @@ function Coupon({ }: ICoupon) {
             onComplete={() => nextStep()}
           />
         </Stepper.Step>
+
         <Stepper.Completed>
           <Card>
             <Group position="apart">

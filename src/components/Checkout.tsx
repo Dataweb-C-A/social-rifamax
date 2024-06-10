@@ -1,6 +1,7 @@
 import { Anchor, Box, Button, Card, Group, Radio, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
 
+import { useTranslation } from 'react-i18next';
 interface ICheckout {
   paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
   quantity: number;
@@ -17,6 +18,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   const [PaymentModule, setPaymentModule] = useState<React.FC<IPaymentModuleProps> | null>(null);
   const [isProceed, setIsProceed] = useState<boolean>(false)
 
+  const { t } = useTranslation();
   const allPayments = ['Pago Móvil', 'Zelle']
 
   // if (flagEnabled) {
@@ -31,7 +33,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
     'Stripe': 'Stripe'
   }
 
-  const dynamicTitle = paymentSelected ? 'Proceda con el pago' : 'Seleccione un método de pago'
+  const dynamicTitle = paymentSelected ? 'Proceda con el pago' : t('selectMethod') 
 
   useEffect(() => {
     if (paymentSelected !== '') {
@@ -43,6 +45,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   }, [paymentSelected]);
 
   const PaymentWall = () => {
+
     return (
       <>
         <Radio.Group
@@ -69,7 +72,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
             disabled={paymentSelected === ''}
             onClick={() => setIsProceed(true)}
           >
-            Proceder
+            {t('proceed')}
           </Button>
         </Group>
       </>
@@ -94,7 +97,8 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                     setIsProceed(false)
                   }}
                 >
-                  Cambiar método de pago
+                  
+                  {t('changePaymentMethod')}
                 </Anchor>
               </Group>
               <PaymentModule
@@ -107,7 +111,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                       }
                     </Text>
                     <Text italic fw={300} c="dimmed" fz={10} ta="end">
-                      Total a pagar
+                    {t('allpay')}
                     </Text>
                   </>
                 }

@@ -2,6 +2,7 @@ import { Button, Group, Text, Card, TextInput, Select } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { IconCash, IconHash } from "@tabler/icons-react";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from 'react-i18next';
 
 interface IPayment {
   children: React.ReactNode;
@@ -33,11 +34,13 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
     form.setFieldValue('reference', reference);
   }, [form.values.reference]);
 
+  const { t } = useTranslation();
   const PayInfo = () => {
     return (
       <>
         <Text fw={300} fz={14} ta="center" mb={10}>
-          Datos del beneficiario
+
+        {t('beneficiaryDetails')}
         </Text>
         <Group position="center">
           <Text fw={700} fz={12}>
@@ -121,7 +124,8 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
               size="xs"
               onClick={() => setIsNext(true)}
             >
-              Verificar pago
+            {t('verifyPayment')}
+              
             </Button>
           )
         }

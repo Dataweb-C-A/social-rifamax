@@ -2,6 +2,7 @@ import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextI
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
+import { useTranslation } from 'react-i18next';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
@@ -37,6 +38,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
   const [oldPhone, setOldPhone] = useState<string>('')
   const [isError, setIsError] = useState<boolean>(false)
 
+  const { t } = useTranslation();
   const emailRegex = /^[a-zA-Z0-9_+\-.]+@[a-z\d\-.]+\.[a-z]+$/i
   const prefixRegex = /^\+\d{1,4}$/
   const phoneRegex = /^\(\d{1,4}\) \d{3}-\d{4}$/
@@ -88,17 +90,17 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       termsOfService: false
     },
     validate: {
-      name: (value: string) => (value.length < 4 ? 'El nombre es demasiado corto' : null),
-      lastName: (value: string) => (value.length < 4 ? 'El apellido es demasiado corto' : null),
-      email: (value: string) => (!emailRegex.test(value) ? 'Correo electrónico no válido' : null),
-      prefix: (value: string) => (!prefixRegex.test(value) ? 'Ingrese un prefijo válido' : null),
-      direction: (value: string) => (value.length < 16 ? 'Direccion invalida' : null),
-      phone: (value: string) => (!phoneRegex.test(value) ? 'Ingrese un número de teléfono válido' : null),
-      city: (value: string) => (value.length < 3 ? 'Ciudad invalida' : null),
-      zip_code: (value: string | number) => (value.toString().length < 4 ? 'Código postal invalido' : null),
-      termsOfService: (value: boolean) => (!value ? 'Debe aceptar los términos y condiciones' : null)
+      name: (value: string) => (value.length < 4 ? t('shortFirstName') : null),
+      lastName: (value: string) => (value.length < 4 ? t('shortLastName') : null),
+      email: (value: string) => (!emailRegex.test(value) ? t('invalidEmail') : null),
+      prefix: (value: string) => (!prefixRegex.test(value) ? t('invalidPrefix') : null),
+      direction: (value: string) => (value.length < 16 ? t('invalidAddress') : null),
+      phone: (value: string) => (!phoneRegex.test(value) ? t('invalidPhoneNumber') : null),
+      city: (value: string) => (value.length < 3 ? t('invalidCity') : null),
+      zip_code: (value: string | number) => (value.toString().length < 4 ? t('invalidPostalCode') : null),
+      termsOfService: (value: boolean) => (!value ? t('mustAcceptTerms') : null)
     }
-  })
+  });
 
   useEffect(() => {
     let phone = form.values.phone;
@@ -119,12 +121,13 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
   return (
     <form onSubmit={form.onSubmit(submit)}>
       <Text fz={18} fw={700}>
-        Ingrese sus datos
+
+      {t('yourdetails')}
       </Text>
       <Group w="100%" spacing={5}>
         <Select
-          label="Prefijo"
-          placeholder="Prefijo"
+          label= {t('prefix')}
+          placeholder= {t('prefix')}
           size="xs"
           w={70}
           searchable
@@ -135,11 +138,12 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
           ]}
           {...form.getInputProps('prefix')}
         />
+
         <TextInput
-          label="Teléfono"
+          label= {t('phone')}
           w='calc(100% - 130px)'
           size="xs"
-          placeholder="Telefono"
+          placeholder= {t('phone')}
           error={form.errors.phone}
           {...form.getInputProps('phone')}
         />
@@ -159,28 +163,28 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
           <Box>
             <Group spacing={10} mt={10}>
               <TextInput
-                label="Nombre"
+                label= {t('firstName')}
                 w='calc(50% - 5px)'
                 size="xs"
-                placeholder="Nombre"
+                placeholder= {t('firstName')}
                 error={form.errors.name}
                 {...form.getInputProps('name')}
               />
               <TextInput
-                label="Apellido"
+                label={t('lastName')}
                 w='calc(50% - 5px)'
                 size="xs"
-                placeholder="Apellido"
+                placeholder={t('lastName')}
                 error={form.errors.lastName}
                 {...form.getInputProps('lastName')}
               />
             </Group>
             <TextInput
-              label="Correo"
+              label={t('email')}
               w='100%'
               mt={10}
               size="xs"
-              placeholder="Correo"
+              placeholder={t('email')}
               error={form.errors.email}
               {...form.getInputProps('email')}
             />
@@ -199,13 +203,13 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               size="xs"
               mt={10}
               placeholder='Estados Unidos'
-              label="País de residencia"
+              label={t('countryOfResidence')}
               error={form.errors.country}
               {...form.getInputProps('country')}
             />
             <Textarea
               mt={10}
-              label="Dirección"
+              label={t('address')}
               placeholder='Main Street Duluth'
               size="xs"
               error={form.errors.direction}
@@ -213,7 +217,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
             />
             <Group spacing={10} mt={10}>
               <TextInput
-                label="Provincia"
+                label={t('province')}
                 w='calc(50% - 5px)'
                 size="xs"
                 placeholder="Georgia"
@@ -221,7 +225,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
                 {...form.getInputProps('city')}
               />
               <TextInput
-                label="Código postal"
+                label={t('postalCode')}
                 w='calc(50% - 5px)'
                 type='number'
                 size="xs"
@@ -232,7 +236,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
             </Group>
             <Box mt={20}>
               <Checkbox
-                label="Acepto los términos y condiciones"
+                label={t('termsAndConditions')}
                 {...form.getInputProps('termsOfService', { type: 'checkbox' })}
                 size="xs"
               />
@@ -243,14 +247,14 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
                 size="xs"
                 onClick={() => prevStep()}
               >
-                Anterior
+               {t('back')}
               </Button>
               <Button
                 type="submit"
                 color="blue"
                 size="xs"
               >
-                Siguiente
+              {t('next')}
               </Button>
             </Group>
             <motion.div
@@ -275,10 +279,11 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
           <>
             <Card ta="center" w="100%" mt={15}>
               <Text c="dimmed" mb={-7} fz={10} fw={300}>
-                ¿No son tus datos?
+              {t('notYourDetails')}
               </Text>
               <Anchor fz={10} fw={300} onClick={() => setUserData(null)}>
-                Presiona aquí para cambiarlos
+             
+              {t('clickToChange')}
               </Anchor>
               <Group position='center' my={10}>
                 <Avatar radius="lg" size="xl" color='blue' />
@@ -294,8 +299,9 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               </Text>
             </Card>
             <Group spacing={5} mt={10} position="center">
-              <Button size="xs" onClick={() => prevStep()}>Anterior</Button>
-              <Button size="xs" onClick={() => nextStep()}>Siguiente</Button>
+           
+              <Button size="xs" onClick={() => prevStep()}> {t('back')}</Button>
+              <Button size="xs" onClick={() => nextStep()}> {t('next')}</Button>
             </Group>
           </>
         )
