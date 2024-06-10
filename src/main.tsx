@@ -9,13 +9,9 @@ import { Notifications } from '@mantine/notifications';
 import { SpotlightProvider } from '@mantine/spotlight';
 import { IconMapSearch, IconSearch } from '@tabler/icons-react';
 import { actions } from './utils/actions.tsx';
-import { PostHogProvider } from 'posthog-js/react'
+import { ModalsProvider } from '@mantine/modals';
 import './index.css';
 import './i18n.ts'
-
-const optionsFeatureFlag = {
-  api_host: 'https://us.i.posthog.com'
-}
 
 const Layout = ({ children }: { children?: React.ReactNode }) => {
   return (
@@ -73,12 +69,9 @@ const AppWrapper = () => {
           </div>
         }
       >
-        <PostHogProvider
-          apiKey='phc_BvGA1aUvwxAH0Qtyk297c6XE6vIkY4r06bVzcdfE2tK'
-          options={optionsFeatureFlag}
-        >
+        <ModalsProvider>
           {!App ? <Loading full message="Loading..." /> : <App />}
-        </PostHogProvider>
+        </ModalsProvider>
       </SpotlightProvider>
     </MantineProvider>
   );

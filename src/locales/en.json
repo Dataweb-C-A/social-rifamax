@@ -1,9 +1,21 @@
 {
   "en": {
     "translation": {
-      "headerTitle": "Test: {{appName}}",
-      "langButton": "Change language"
+      "paymentsTitle": "Payment gateway",
+      "pendingSegment": "Pending payments",
+      "historySegment": "Payment history",
+      "verifyPaymentButton": "Verify payment",
+      "amountTablePH": "Amount",
+      "dateTablePH": "Date",
+      "statusTablePH": "Status",
+      "optionsTablePH": "Options",
+      "navbarMenuTitle": "Menu",
+      "navbarPayments": "Payments",
+      "navbarMyRaffles": "My raffles",
+      "navbarMyProfile": "Profile",
+      "verifyPaymentModalTitle": "Verify payment",
+      "acceptActionPaymentModal": "Accept",
+      "cancelActionPaymentModal": "Reject"
     }
   }
 }
-

@@ -11,6 +11,7 @@ const Rafflesi = lazy(() => import('./pages/MPI'));
 const DevStats = lazy(() => import("./pages/DevStats"));
 // const Passport = lazy(() => import("./pages/Passport"));
 const Profile = lazy(() => import("./pages/Profile"));
+const Payments = lazy(() => import("./pages/Payments"));
 const Gate = lazy(() => import("./pages/Gate"));
 const Coupon = lazy(() => import("./pages/Coupon"));
 
@@ -27,6 +28,7 @@ function App() {
         <Route path="admin" element={<AuthRoute />}>
           <Route path="profile" element={<Profile />} />
           <Route path="dashboard" element={<Home />} />
+          <Route path="payments" element={<Payments />} />
         </Route>
         <Route path="login" element={<Login />} />
         <Route path="dev" element={<AuthRoute />}>

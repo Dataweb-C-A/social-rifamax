@@ -10,7 +10,7 @@ function ThemeSwitcher() {
     <div>
       <Switch
         size="lg"
-        mt={6}
+        mt={4}
         onChange={toggleTheme}
         color={theme.colorScheme === 'dark' ? 'gray' : 'light'}
         onLabel={<IconSun size="1rem" stroke={2.5} color={theme.colors.yellow[4]} />}

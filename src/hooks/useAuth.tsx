@@ -2,7 +2,7 @@ import { RootState } from "@/store";
 import { IconX } from '@tabler/icons-react';
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser, clearUser, setToken } from "../store/reducers/userSlice";
+import { setUser, clearUser, setToken } from "@/store/reducers/userSlice";
 import { notifications } from "@mantine/notifications";
 import { Text } from "@mantine/core";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -14,7 +14,7 @@ export default function useAuth() {
 
   const login = (email: string, password: string) => {
     axios
-      .post(`https://api.rifa-max.com/social/login`, {
+      .post(`http://localhost:3000/social/login`, {
         email: email,
         password: password,
       })

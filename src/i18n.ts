@@ -8,5 +8,5 @@ i18n.use(initReactI18next).init({
     en: { ...en },
     es: { ...es },
   },
-  lng: "es",
+  lng: localStorage.getItem("language") as 'en' | 'es' || "en",
 });

@@ -1,8 +1,21 @@
 {
   "es": {
     "translation": {
-      "headerTitle": "Prueba: {{appName}}",
-      "langButton": "Cambiar idioma"
+      "paymentsTitle": "Portal de Pagos",
+      "pendingSegment": "Pagos pendientes",
+      "historySegment": "Historial de pagos",
+      "verifyPaymentButton": "Verificar",
+      "amountTablePH": "Monto",
+      "dateTablePH": "Fecha",
+      "statusTablePH": "Estado",
+      "optionsTablePH": "Opciones",
+      "navbarMenuTitle": "Menú",
+      "navbarPayments": "Pagos",
+      "navbarMyRaffles": "Mis rifas",
+      "navbarMyProfile": "Mi perfil",
+      "verifyPaymentModalTitle": "Verificar pago",
+      "acceptActionPaymentModal": "Aceptar pago",
+      "cancelActionPaymentModal": "Rechazar pago"
     }
   }
 }

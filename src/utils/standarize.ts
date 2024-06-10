@@ -1,7 +1,7 @@
 interface IStandarize {
   value: number;
-  country: "en-US" | "es-VE" | "es" | "en";
-  currency: "USD" | "VES" | "EUR" | "GBP";
+  country: string;
+  currency: "USD" | "VES" | "EUR" | "COP";
 }
 
 export default function standarize({ value, country, currency }: IStandarize) {

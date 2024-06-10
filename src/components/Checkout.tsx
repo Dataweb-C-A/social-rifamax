@@ -1,6 +1,5 @@
 import { Anchor, Box, Button, Card, Group, Radio, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
-import { useFeatureFlagEnabled } from 'posthog-js/react'
 
 interface ICheckout {
   paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
@@ -18,13 +17,11 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   const [PaymentModule, setPaymentModule] = useState<React.FC<IPaymentModuleProps> | null>(null);
   const [isProceed, setIsProceed] = useState<boolean>(false)
 
-  const flagEnabled = useFeatureFlagEnabled('stripe-to-payments')
-
   const allPayments = ['Pago Móvil', 'Zelle']
 
-  if (flagEnabled) {
-    allPayments.push('Stripe')
-  }
+  // if (flagEnabled) {
+  //   allPayments.push('Stripe')
+  // }
 
   type IPaymentType = typeof allPayments[number];
 
@@ -33,7 +30,6 @@ function Checkout({ quantity, onComplete }: ICheckout) {
     'Zelle': 'Zelle',
     'Stripe': 'Stripe'
   }
-
 
   const dynamicTitle = paymentSelected ? 'Proceda con el pago' : 'Seleccione un método de pago'
 
