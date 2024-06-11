@@ -73,9 +73,10 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
           isNext ? (
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
+              
                 w="100%"
-                label="Número de referencia"
-                placeholder="Ingrese número de referencia"
+                label={t('referenceNumber') }
+                placeholder={t('referenceNumber') }
                 mb={20}
                 size="xs"
                 icon={<IconHash size='1rem' />}
@@ -83,7 +84,7 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
                 {...form.getInputProps('reference')}
               />
               <Select
-                label="Banco"
+                label={t('bank') }
                 placeholder="Seleccione un banco"
                 size="xs"
                 searchable
@@ -116,7 +117,7 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
               disabled={form.values.reference.length < 6}
               onClick={onPay}
             >
-              Realizar pago
+                 {t('dopay')}
             </Button>
           ) : (
             <Button

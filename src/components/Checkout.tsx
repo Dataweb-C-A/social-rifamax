@@ -33,7 +33,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
     'Stripe': 'Stripe'
   }
 
-  const dynamicTitle = paymentSelected ? 'Proceda con el pago' : t('selectMethod') 
+  const dynamicTitle = paymentSelected ? t('procedpay')  : t('selectMethod') 
 
   useEffect(() => {
     if (paymentSelected !== '') {

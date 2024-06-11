@@ -3,6 +3,7 @@ import React, { useState } from "react"
 import { useForm } from "@mantine/form";
 import { IconHash, IconUser } from "@tabler/icons-react";
 
+import { useTranslation } from 'react-i18next';
 interface IPayment {
   children: React.ReactNode;
   onPay: () => void;
@@ -27,11 +28,14 @@ function ZellePayment({ children, onPay }: IPayment) {
     }
   })
 
+  const { t } = useTranslation();
   const PaymentWall = () => {
+
     return (
       <>
         <Text fw={300} fz={14} ta="center" mb={10}>
-          Datos del beneficiario
+         
+        {t('beneficiaryDetails')}
         </Text>
         <Group position="center">
           <Text fw={700} fz={12}>
@@ -55,8 +59,8 @@ function ZellePayment({ children, onPay }: IPayment) {
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
                 w="100%"
-                label="Nombre de la cuenta"
-                placeholder="Nombre del poseedor de la cuenta"
+                label={t('accountName') }
+                placeholder={t('accountName ') }
                 mb={20}
                 size="xs"
                 icon={<IconUser size='1rem' />}
@@ -65,8 +69,8 @@ function ZellePayment({ children, onPay }: IPayment) {
               />
               <TextInput
                 w="100%"
-                label="Número de referencia"
-                placeholder="Ingrese número de referencia"
+                label={t('referenceNumber') }
+                placeholder={t('referenceNumber') }
                 mb={20}
                 size="xs"
                 icon={<IconHash size='1rem' />}
@@ -87,7 +91,7 @@ function ZellePayment({ children, onPay }: IPayment) {
               disabled={form.values.reference.length < 6}
               onClick={onPay}
             >
-              Notificar pago
+                {t('Notifypayment')}
             </Button>
           ) : (
             <Button
@@ -95,7 +99,8 @@ function ZellePayment({ children, onPay }: IPayment) {
               size="xs"
               onClick={() => setIsNext(true)}
             >
-              Realizar pago
+             
+             {t('dopay')}
             </Button>
           )
         }

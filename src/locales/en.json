@@ -27,7 +27,7 @@
       "allpay": "Total payable",
       "next": "Next",
       "back": "Back",
-      "yourdetails": "Enter your details",
+      "yourdetails": "Enter your information",
       "prefix": "Prefix",
       "phone": "Phone",
       "firstName": "First Name",
@@ -56,7 +56,13 @@
       "verifyPayment": "Verify payment",
       "referenceNumber": "Reference number",
       "bank": "Bank",
-      "accountName": "Account name"
+      "accountName": "Account name",
+      "procedpay": "Proceed to payment",
+      "dopay": "Make payment",
+      "Notifypayment":"Notify payment",
+      "purchaseSuccessful": "Purchase successful!",
+      "receiptWillBeSent": "Receipt will be sent upon payment verification",
+      "completed": "Completed"
     }
   }
 }

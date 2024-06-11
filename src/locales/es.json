@@ -56,7 +56,14 @@
       "verifyPayment": "Verificar pago",
       "referenceNumber": "Número de referencia",
       "bank": "Banco",
-      "accountName": "Nombre de la cuenta"
+      "accountName": "Nombre de la cuenta",
+      "procedpay": "Proceda con el pago ",
+      "dopay": " Realizar pago",
+      "Notifypayment":"Notificar pago",
+      "purchaseSuccessful": "¡Compra exitosa!",
+      "receiptWillBeSent": "Se le enviará el recibo al verificar su pago",
+      "completed": "Finalizado"
+    
     }
   }
 }

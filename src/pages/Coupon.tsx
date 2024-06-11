@@ -336,7 +336,7 @@ function Coupon({ }: ICoupon) {
                 ORD-ABDU1782930
               </Text>
               <Text c="dimmed" italic fz={12}>
-                Cantidad: {quantity}
+              {t('quantity')}: {quantity}
               </Text>
             </Group>
             <Group my={20} position="center">
@@ -345,10 +345,10 @@ function Coupon({ }: ICoupon) {
               </Avatar>
             </Group>
             <Text ta="center" mb={20} fz={20} fw={700}>
-              ¡Compra exitosa!
+            {t('purchaseSuccessful')}
             </Text>
             <Text ta="center" mb={20} fz={15} fw={700}>
-              Se le enviara el recibo al verificar su pago
+            {t('receiptWillBeSent')}
             </Text>
             <ScrollArea mah={190} h={190} scrollbarSize={3} mb={20}>
               {
@@ -365,10 +365,10 @@ function Coupon({ }: ICoupon) {
                             Rifa de Hyundai Santa Fe 2023
                           </Text>
                           <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
-                            Cantidad: 1
+                          {t('quantity')}: 1
                           </Text>
                           <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
-                            Precio: 21$
+                          {t('prize')}: 21$
                           </Text>
                         </div>
                         <div className={classes.removeButton}>
@@ -388,7 +388,7 @@ function Coupon({ }: ICoupon) {
                 setActive(0)
               }}
             >
-              Finalizado
+              {t('completed')}
             </Button>
           </Card>
         </Stepper.Completed>
