@@ -153,7 +153,7 @@ function Coupon({ }: ICoupon) {
 
   const items = [
     { title: t('raffles'), href: '/raffles' },
-    { title: t('couponstitle'), href: '/coupon' },
+    { title: t('couponsTitle'), href: '/coupon' },
   ].map((item, index) => (
     <Anchor fz={17} mt={-2} onClick={() => navigate(item.href)} key={index}>
       {item.title}
@@ -181,7 +181,7 @@ function Coupon({ }: ICoupon) {
 
 
         <Title order={2} mb={10}>
-          {t('couponstitle')}
+          {t('couponsTitle')}
         </Title>
       </div>
       <Breadcrumbs>{items}</Breadcrumbs>
@@ -295,7 +295,7 @@ function Coupon({ }: ICoupon) {
             </Group>
             <div>
               <Text fz={11} ta="end" italic fw={700}>
-              {t('allpay')}:
+                {t('totalAmount')}:
               </Text>
               <Text fz={14} ta="end" fw={300}>
                 {quantity * 21}$
@@ -320,7 +320,7 @@ function Coupon({ }: ICoupon) {
 
         <Stepper.Step
           icon={<IconCreditCard size={16} />}
-          label={<Text mt={3} fz={10}>{t('buy')}</Text>}
+          label={<Text mt={3} fz={10}>{t('payStepper')}</Text>}
         >
           <Checkout
             paymentMethods={['Pago Móvil', 'Zelle']}
@@ -336,7 +336,7 @@ function Coupon({ }: ICoupon) {
                 ORD-ABDU1782930
               </Text>
               <Text c="dimmed" italic fz={12}>
-              {t('quantity')}: {quantity}
+                {t('quantity')}: {quantity}
               </Text>
             </Group>
             <Group my={20} position="center">
@@ -345,10 +345,10 @@ function Coupon({ }: ICoupon) {
               </Avatar>
             </Group>
             <Text ta="center" mb={20} fz={20} fw={700}>
-            {t('purchaseSuccessful')}
+              {t('purchaseSuccessful')}
             </Text>
             <Text ta="center" mb={20} fz={15} fw={700}>
-            {t('receiptWillBeSent')}
+              {t('receiptWillBeSent')}
             </Text>
             <ScrollArea mah={190} h={190} scrollbarSize={3} mb={20}>
               {
@@ -365,10 +365,10 @@ function Coupon({ }: ICoupon) {
                             Rifa de Hyundai Santa Fe 2023
                           </Text>
                           <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
-                          {t('quantity')}: 1
+                            {t('quantity')}: 1
                           </Text>
                           <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
-                          {t('prize')}: 21$
+                            {t('prize')}: 21$
                           </Text>
                         </div>
                         <div className={classes.removeButton}>

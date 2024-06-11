@@ -19,13 +19,13 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   const [isProceed, setIsProceed] = useState<boolean>(false)
 
   const { t } = useTranslation();
-  const allPayments = ['Pago Móvil', 'Zelle']
+  const totalAmountments = ['Pago Móvil', 'Zelle']
 
   // if (flagEnabled) {
-  //   allPayments.push('Stripe')
+  //   totalAmountments.push('Stripe')
   // }
 
-  type IPaymentType = typeof allPayments[number];
+  type IPaymentType = typeof totalAmountments[number];
 
   const parseToFile: Record<IPaymentType, string> = {
     'Pago Móvil': 'PagoMovil',
@@ -33,7 +33,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
     'Stripe': 'Stripe'
   }
 
-  const dynamicTitle = paymentSelected ? t('procedpay')  : t('selectMethod') 
+  const dynamicTitle = paymentSelected ? t('procedpay') : t('selectMethod')
 
   useEffect(() => {
     if (paymentSelected !== '') {
@@ -53,7 +53,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
           onChange={setPaymentSelected}
         >
           {
-            allPayments.map((payment: IPaymentType) => {
+            totalAmountments.map((payment: IPaymentType) => {
               return (
                 <Box py={5}>
                   <Radio
@@ -97,7 +97,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                     setIsProceed(false)
                   }}
                 >
-                  
+
                   {t('changePaymentMethod')}
                 </Anchor>
               </Group>
@@ -111,7 +111,7 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                       }
                     </Text>
                     <Text italic fw={300} c="dimmed" fz={10} ta="end">
-                    {t('allpay')}
+                      {t('totalAmount')}
                     </Text>
                   </>
                 }

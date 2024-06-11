@@ -122,12 +122,12 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
     <form onSubmit={form.onSubmit(submit)}>
       <Text fz={18} fw={700}>
 
-      {t('yourdetails')}
+        {t('userDetailsTitle')}
       </Text>
       <Group w="100%" spacing={5}>
         <Select
-          label= {t('prefix')}
-          placeholder= {t('prefix')}
+          label={t('prefix')}
+          placeholder={t('prefix')}
           size="xs"
           w={70}
           searchable
@@ -140,10 +140,10 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
         />
 
         <TextInput
-          label= {t('phone')}
+          label={t('phone')}
           w='calc(100% - 130px)'
           size="xs"
-          placeholder= {t('phone')}
+          placeholder={t('phone')}
           error={form.errors.phone}
           {...form.getInputProps('phone')}
         />
@@ -163,10 +163,10 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
           <Box>
             <Group spacing={10} mt={10}>
               <TextInput
-                label= {t('firstName')}
+                label={t('firstName')}
                 w='calc(50% - 5px)'
                 size="xs"
-                placeholder= {t('firstName')}
+                placeholder={t('firstName')}
                 error={form.errors.name}
                 {...form.getInputProps('name')}
               />
@@ -247,14 +247,14 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
                 size="xs"
                 onClick={() => prevStep()}
               >
-               {t('back')}
+                {t('back')}
               </Button>
               <Button
                 type="submit"
                 color="blue"
                 size="xs"
               >
-              {t('next')}
+                {t('next')}
               </Button>
             </Group>
             <motion.div
@@ -279,11 +279,11 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
           <>
             <Card ta="center" w="100%" mt={15}>
               <Text c="dimmed" mb={-7} fz={10} fw={300}>
-              {t('notYourDetails')}
+                {t('wrongDetails')}
               </Text>
               <Anchor fz={10} fw={300} onClick={() => setUserData(null)}>
-             
-              {t('clickToChange')}
+
+                {t('clickToChange')}
               </Anchor>
               <Group position='center' my={10}>
                 <Avatar radius="lg" size="xl" color='blue' />
@@ -299,7 +299,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               </Text>
             </Card>
             <Group spacing={5} mt={10} position="center">
-           
+
               <Button size="xs" onClick={() => prevStep()}> {t('back')}</Button>
               <Button size="xs" onClick={() => nextStep()}> {t('next')}</Button>
             </Group>

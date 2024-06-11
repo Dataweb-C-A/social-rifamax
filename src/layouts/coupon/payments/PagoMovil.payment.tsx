@@ -14,7 +14,7 @@ interface IPaymentForm {
   bank: string
 }
 
-function PagoMovilPayment({ children, onPay}: IPayment) {
+function PagoMovilPayment({ children, onPay }: IPayment) {
   const [isNext, setIsNext] = useState<boolean>(false)
 
   const form = useForm<IPaymentForm>({
@@ -40,7 +40,7 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
       <>
         <Text fw={300} fz={14} ta="center" mb={10}>
 
-        {t('beneficiaryDetails')}
+          {t('beneficiaryDetails')}
         </Text>
         <Group position="center">
           <Text fw={700} fz={12}>
@@ -73,10 +73,10 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
           isNext ? (
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
-              
+
                 w="100%"
-                label={t('referenceNumber') }
-                placeholder={t('referenceNumber') }
+                label={t('referenceNumber')}
+                placeholder={t('referenceNumber')}
                 mb={20}
                 size="xs"
                 icon={<IconHash size='1rem' />}
@@ -84,7 +84,7 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
                 {...form.getInputProps('reference')}
               />
               <Select
-                label={t('bank') }
+                label={t('bank')}
                 placeholder="Seleccione un banco"
                 size="xs"
                 searchable
@@ -117,7 +117,7 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
               disabled={form.values.reference.length < 6}
               onClick={onPay}
             >
-                 {t('dopay')}
+              {t('confirmPayment')}
             </Button>
           ) : (
             <Button
@@ -125,8 +125,8 @@ function PagoMovilPayment({ children, onPay}: IPayment) {
               size="xs"
               onClick={() => setIsNext(true)}
             >
-            {t('verifyPayment')}
-              
+              {t('verifyPayment')}
+
             </Button>
           )
         }

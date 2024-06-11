@@ -34,8 +34,8 @@ function ZellePayment({ children, onPay }: IPayment) {
     return (
       <>
         <Text fw={300} fz={14} ta="center" mb={10}>
-         
-        {t('beneficiaryDetails')}
+
+          {t('beneficiaryDetails')}
         </Text>
         <Group position="center">
           <Text fw={700} fz={12}>
@@ -59,8 +59,8 @@ function ZellePayment({ children, onPay }: IPayment) {
             <form onSubmit={form.onSubmit((values) => console.log(values))}>
               <TextInput
                 w="100%"
-                label={t('accountName') }
-                placeholder={t('accountName ') }
+                label={t('accountHolderName')}
+                placeholder={t('accountHolderName ')}
                 mb={20}
                 size="xs"
                 icon={<IconUser size='1rem' />}
@@ -69,8 +69,8 @@ function ZellePayment({ children, onPay }: IPayment) {
               />
               <TextInput
                 w="100%"
-                label={t('referenceNumber') }
-                placeholder={t('referenceNumber') }
+                label={t('referenceNumber')}
+                placeholder={t('referenceNumber')}
                 mb={20}
                 size="xs"
                 icon={<IconHash size='1rem' />}
@@ -91,7 +91,7 @@ function ZellePayment({ children, onPay }: IPayment) {
               disabled={form.values.reference.length < 6}
               onClick={onPay}
             >
-                {t('Notifypayment')}
+              {t('notifyPayment')}
             </Button>
           ) : (
             <Button
@@ -99,8 +99,8 @@ function ZellePayment({ children, onPay }: IPayment) {
               size="xs"
               onClick={() => setIsNext(true)}
             >
-             
-             {t('dopay')}
+
+              {t('confirmPayment')}
             </Button>
           )
         }
