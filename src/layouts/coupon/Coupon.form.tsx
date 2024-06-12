@@ -279,8 +279,52 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       {
         userData && (
           <>
-          <Modal opened={opened} onClose={close} style={{ zIndex: 9999999999999999999999999999999999999999999 }} title="Authentication">
-        {/* Modal content */}
+          <Modal opened={opened} onClose={close} withCloseButton={false} style={{ zIndex: 99999 }}>
+          <TextInput
+              label={t('email')}
+              w='100%'
+              mt={10}
+              size="xs"
+              placeholder={t('email')}
+            />
+            <Select
+              data={[
+                {
+                  value: 'USA', label: 'Estados Unidos'
+                },
+                {
+                  value: 'Venezuela', label: 'Venezuela'
+                },
+                {
+                  value: 'Colombia', label: 'Colombia'
+                }
+              ]}
+              size="xs"
+              mt={10}
+              placeholder='Estados Unidos'
+              label={t('countryOfResidence')}
+            />
+            <Textarea
+              mt={10}
+              label={t('address')}
+              placeholder='Main Street Duluth'
+              size="xs"
+            />
+            <Group spacing={10} mt={10}>
+              <TextInput
+                label={t('province')}
+                w='calc(50% - 5px)'
+                size="xs"
+                placeholder="Georgia"
+              />
+              <TextInput
+                label={t('postalCode')}
+                w='calc(50% - 5px)'
+                type='number'
+                size="xs"
+                placeholder="4005"
+              />
+            </Group>
       </Modal>
             <Card ta="center" w="100%" mt={15}>
               <Text c="dimmed" mb={-7} fz={10} fw={300}>
