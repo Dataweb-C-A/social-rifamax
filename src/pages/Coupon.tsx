@@ -75,7 +75,7 @@ function Coupon({ }: ICoupon) {
       marginTop: '10px',
       height: '100%',
       bottom: 0,
-      zIndex: 9999,
+      zIndex: 9998,
       borderRadius: '25px 25px 0 0',
       display: !isMobile ? 'none' : 'block',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],

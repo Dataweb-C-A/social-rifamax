@@ -1,8 +1,9 @@
-import { Anchor, Avatar, Box, Button, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
+import { Anchor, Avatar, Box, Button,Modal, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
 import { useTranslation } from 'react-i18next';
+import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
 
@@ -36,6 +37,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
   const [isUserExists, setIsUserExists] = useState<boolean>(true)
   const [userData, setUserData] = useState<IUser | null>(null)
   const [oldPhone, setOldPhone] = useState<string>('')
+  const [opened, { open, close }] = useDisclosure(false);
   const [isError, setIsError] = useState<boolean>(false)
 
   const { t } = useTranslation();
@@ -277,11 +279,14 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       {
         userData && (
           <>
+          <Modal opened={opened} onClose={close} style={{ zIndex: 9999999999999999999999999999999999999999999 }} title="Authentication">
+        {/* Modal content */}
+      </Modal>
             <Card ta="center" w="100%" mt={15}>
               <Text c="dimmed" mb={-7} fz={10} fw={300}>
                 {t('wrongDetails')}
               </Text>
-              <Anchor fz={10} fw={300} onClick={() => setUserData(null)}>
+              <Anchor fz={10} fw={300} onClick={open}>
 
                 {t('clickToChange')}
               </Anchor>

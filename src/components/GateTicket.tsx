@@ -47,7 +47,7 @@ function GateTicket({ status = 'sold', value }: IGateTicket) {
       margin: '0 5px 0 5px',
       borderRadius: theme.radius.sm,
       background: isSelected ? 'red' : 'transparent',
-      zIndex: 99999
+      zIndex: 9998
     }
   }))
   const { classes } = useStyles()
@@ -84,7 +84,7 @@ function GateTicket({ status = 'sold', value }: IGateTicket) {
     <motion.div
       className={classes.gate}
       initial={{ scale: 1 }}
-      whileHover={{ scale: ticketStatus, zIndex: 9999 }}
+      whileHover={{ scale: ticketStatus, zIndex: 9998 }}
       onClick={selectTicket}
     >
       {value}

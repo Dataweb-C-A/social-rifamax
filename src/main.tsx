@@ -60,7 +60,7 @@ const AppWrapper = () => {
         searchIcon={<IconSearch size="1.2rem" />}
         searchPlaceholder="Buscar..."
         shortcut={"ctrl + B"}
-        zIndex={999999}
+        zIndex={9998}
         centered
         nothingFoundMessage={
           <div style={{ width: '100%', textAlign: 'center', justifyContent: 'center', padding: '50px 0' }}>

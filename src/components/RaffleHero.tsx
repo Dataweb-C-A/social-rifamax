@@ -44,7 +44,7 @@ const useStyles = createStyles((theme) => ({
     height: '100%',
     justifyContent: 'center',
     paddingTop: '5px',
-    zIndex: 99999
+    zIndex: 9998
   },
   buttonRaffle: {
     width: '100%',

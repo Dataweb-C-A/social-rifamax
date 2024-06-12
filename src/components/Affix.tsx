@@ -8,7 +8,7 @@ function Affix({ children }: { children?: React.ReactNode }) {
   return (
     <>
       {children}
-      <Ax position={{ bottom: rem(20), right: rem(20) }} zIndex={999999}>
+      <Ax position={{ bottom: rem(20), right: rem(20) }} zIndex={9998}>
         <Transition transition="slide-up" mounted={scroll.y > 0}>
           {(transitionStyles) => (
             <Button
