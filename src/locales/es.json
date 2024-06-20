@@ -57,13 +57,19 @@
       "verifyPayment": "Verificar pago",
       "referenceNumber": "Número de referencia",
       "bank": "Banco",
-      "accountHolderName": "Nombre del titular la cuenta",
+      "accountHolderName": "Nombre del titular de la cuenta",
+      "accountEmailName": "Correo del titular de la cuenta",
       "procedpay": "Proceda con el pago ",
       "confirmPayment": " Realizar pago",
       "notifyPayment": "Notificar pago",
       "purchaseSuccessful": "¡Compra exitosa!",
       "receiptWillBeSent": "Se le enviará el recibo al verificar su pago",
-      "completed": "Finalizado"
+      "completed": "Finalizado",
+      "accept": "Aceptar",
+      "reject": "Rechazar",
+      "goBack": "Volver",
+      "finish": "Finalizar",
+      "changeAddressModalTitle": "Actualiza tu dirección"
     }
   }
 }

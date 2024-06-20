@@ -58,12 +58,18 @@
       "referenceNumber": "Reference number",
       "bank": "Bank",
       "accountHolderName": "Name of the account holder",
+      "accountEmailName": "Account holder's email",
       "procedpay": "Proceed to payment",
       "confirmPayment": "Confirm payment",
       "notifyPayment": "Notify payment",
       "purchaseSuccessful": "Purchase successful!",
       "receiptWillBeSent": "Receipt will be sent upon payment verification",
-      "completed": "Completed"
+      "completed": "Completed",
+      "accept": "Accept",
+      "reject": "Reject",
+      "goBack": "Go back",
+      "finish": "Finish",
+      "changeAddressModalTitle": "Update your address"
     }
   }
 }

@@ -1,4 +1,17 @@
-import { Anchor, Avatar, Box, Button,Modal, Card, Checkbox, Group, Select, Text, TextInput, Textarea } from '@mantine/core'
+import {
+  Anchor,
+  Avatar,
+  Box,
+  Button,
+  Modal,
+  Card,
+  Checkbox,
+  Group,
+  Select,
+  Text,
+  TextInput,
+  Textarea
+} from '@mantine/core'
 import { useForm } from '@mantine/form'
 import { motion } from 'framer-motion'
 import { IconSearch } from '@tabler/icons-react'
@@ -6,6 +19,9 @@ import { useTranslation } from 'react-i18next';
 import { useDisclosure } from '@mantine/hooks';
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import AddressForm from './address/Address.form';
+import { useAddress } from '../../hooks/useAddress';
+import { useClient } from '../../hooks/useClient';
 
 interface IForm {
   name: string
@@ -23,9 +39,12 @@ interface IForm {
 interface IUser {
   id: number;
   name: string;
-  dni: string | null;
   email: string | null;
   phone: string;
+  country: string;
+  address: string;
+  province: string;
+  zip_code: string;
 }
 
 interface ICouponForm {
@@ -39,21 +58,48 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
   const [oldPhone, setOldPhone] = useState<string>('')
   const [opened, { open, close }] = useDisclosure(false);
   const [isError, setIsError] = useState<boolean>(false)
-
+  const { address, changeAddress } = useAddress()
+  const { changeClient } = useClient()
   const { t } = useTranslation();
   const emailRegex = /^[a-zA-Z0-9_+\-.]+@[a-z\d\-.]+\.[a-z]+$/i
   const prefixRegex = /^\+\d{1,4}$/
   const phoneRegex = /^\(\d{1,4}\) \d{3}-\d{4}$/
 
+  const changeDirection = () => {
+    userData && (
+      setUserData({
+        ...userData,
+        ...address
+      })
+    )
+    close()
+  }
+
   const verifyUser = (phone: string) => {
     setUserData(null)
     setIsUserExists(true)
-    axios.get('https://api.rifa-max.com/x100/clients', {
+    axios.get('http://localhost:3000/social/clients/phone', {
       params: {
         phone: phone
       }
     }).then(response => {
       console.log(response.data)
+      changeClient({
+        data: {
+          id: response.data.id,
+          name: response.data.name,
+          phone: response.data.phone,
+          email: response.data.email
+        }
+      })
+      changeAddress({
+        data: {
+          address: response.data.address,
+          province: response.data.province,
+          country: response.data.country,
+          zip_code: response.data.zip_code
+        }
+      })
       setUserData(response.data)
     }).catch(error => {
       console.log(error)
@@ -63,15 +109,25 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
 
   const submit = (values: IForm) => {
     setIsError(false)
-    axios.post('https://api.rifa-max.com/x100/clients', {
-      x100_client: {
+    axios.post('http://localhost:3000/social/clients', {
+      social_client: {
         name: values.name + ' ' + values.lastName,
-        // email: values.email,
-        // phone: values.prefix + ' ' + values.phone,
-        // pv: false,
-        // is_integration: false
+        email: values.email,
+        phone: values.prefix + ' ' + values.phone,
+        address: values.direction,
+        province: values.city,
+        zip_code: values.zip_code,
+        country: values.country
       }
-    }).then(() => {
+    }).then((res) => {
+      changeClient({
+        data: {
+          id: res.data.id,
+          name: values.name + ' ' + values.lastName,
+          phone: values.prefix + ' ' + values.phone,
+          email: values.email
+        }
+      })
       nextStep()
     }).catch(() => {
       nextStep()
@@ -192,15 +248,9 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
             />
             <Select
               data={[
-                {
-                  value: 'USA', label: 'Estados Unidos'
-                },
-                {
-                  value: 'Venezuela', label: 'Venezuela'
-                },
-                {
-                  value: 'Colombia', label: 'Colombia'
-                }
+                { value: 'USA', label: 'Estados Unidos' },
+                { value: 'Venezuela', label: 'Venezuela' },
+                { value: 'Colombia', label: 'Colombia' }
               ]}
               size="xs"
               mt={10}
@@ -279,59 +329,24 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
       {
         userData && (
           <>
-          <Modal opened={opened} onClose={close} withCloseButton={false} style={{ zIndex: 99999 }}>
-          <TextInput
-              label={t('email')}
-              w='100%'
-              mt={10}
-              size="xs"
-              placeholder={t('email')}
-            />
-            <Select
-              data={[
-                {
-                  value: 'USA', label: 'Estados Unidos'
-                },
-                {
-                  value: 'Venezuela', label: 'Venezuela'
-                },
-                {
-                  value: 'Colombia', label: 'Colombia'
-                }
-              ]}
-              size="xs"
-              mt={10}
-              placeholder='Estados Unidos'
-              label={t('countryOfResidence')}
-            />
-            <Textarea
-              mt={10}
-              label={t('address')}
-              placeholder='Main Street Duluth'
-              size="xs"
-            />
-            <Group spacing={10} mt={10}>
-              <TextInput
-                label={t('province')}
-                w='calc(50% - 5px)'
-                size="xs"
-                placeholder="Georgia"
+            <Modal
+              opened={opened}
+              onClose={close}
+              withCloseButton={false}
+              centered
+              title={t('changeAddressModalTitle')}
+            >
+              <AddressForm
+                user_id={userData.id}
+                onCancel={close}
+                onAccept={changeDirection}
               />
-              <TextInput
-                label={t('postalCode')}
-                w='calc(50% - 5px)'
-                type='number'
-                size="xs"
-                placeholder="4005"
-              />
-            </Group>
-      </Modal>
+            </Modal>
             <Card ta="center" w="100%" mt={15}>
-              <Text c="dimmed" mb={-7} fz={10} fw={300}>
+              <Text c="dimmed" mb={-7} fz={12} fw={300}>
                 {t('wrongDetails')}
               </Text>
-              <Anchor fz={10} fw={300} onClick={open}>
-
+              <Anchor fz={11} fw={300} onClick={open}>
                 {t('clickToChange')}
               </Anchor>
               <Group position='center' my={10}>
@@ -346,9 +361,11 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
               <Text c="dimmed" fz={12} fw={300}>
                 {userData.phone}
               </Text>
+              <Text c="dimmed" fz={12} fw={300}>
+                {address.address} {address.zip_code}, {address.province}, {address.country}.
+              </Text>
             </Card>
             <Group spacing={5} mt={10} position="center">
-
               <Button size="xs" onClick={() => prevStep()}> {t('back')}</Button>
               <Button size="xs" onClick={() => nextStep()}> {t('next')}</Button>
             </Group>

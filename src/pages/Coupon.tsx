@@ -14,7 +14,6 @@ interface ICoupon {
 
 }
 
-
 function Coupon({ }: ICoupon) {
   const isMobile = useMediaQuery(`(max-width: 900px)`);
 
@@ -75,7 +74,7 @@ function Coupon({ }: ICoupon) {
       marginTop: '10px',
       height: '100%',
       bottom: 0,
-      zIndex: 9998,
+      zIndex: 2,
       borderRadius: '25px 25px 0 0',
       display: !isMobile ? 'none' : 'block',
       backgroundColor: theme.colorScheme === 'dark' ? theme.colors.dark[9] : theme.colors.gray[0],
@@ -126,11 +125,14 @@ function Coupon({ }: ICoupon) {
       borderRadius: '3px 0 0 3px'
     },
     raffleLabel: {
-      marginTop: -10,
       color: 'black',
       fontSize: 13.5,
       fontWeight: 600,
       textAlign: 'center',
+      background: '#fff',
+      margin: '-16px -16px 0 -16px',
+      paddingY: '5px',
+      borderRadius: '5px 5px 0 0'
     },
     minusButton: {
       borderRadius: '3px 0 0 3px'
@@ -323,6 +325,7 @@ function Coupon({ }: ICoupon) {
           label={<Text mt={3} fz={10}>{t('payStepper')}</Text>}
         >
           <Checkout
+            amount={quantity * 21}
             paymentMethods={['Pago Móvil', 'Zelle']}
             quantity={quantity}
             onComplete={() => nextStep()}

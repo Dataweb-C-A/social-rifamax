@@ -5,15 +5,17 @@ import { useTranslation } from 'react-i18next';
 interface ICheckout {
   paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
   quantity: number;
+  amount: number;
   onComplete: () => void;
 }
 
 interface IPaymentModuleProps {
   onPay: () => void;
+  amount: number;
   children: React.ReactNode;
 }
 
-function Checkout({ quantity, onComplete }: ICheckout) {
+function Checkout({ amount, quantity, onComplete }: ICheckout) {
   const [paymentSelected, setPaymentSelected] = useState<IPaymentType | ''>('')
   const [PaymentModule, setPaymentModule] = useState<React.FC<IPaymentModuleProps> | null>(null);
   const [isProceed, setIsProceed] = useState<boolean>(false)
@@ -45,7 +47,6 @@ function Checkout({ quantity, onComplete }: ICheckout) {
   }, [paymentSelected]);
 
   const PaymentWall = () => {
-
     return (
       <>
         <Radio.Group
@@ -97,11 +98,11 @@ function Checkout({ quantity, onComplete }: ICheckout) {
                     setIsProceed(false)
                   }}
                 >
-
                   {t('changePaymentMethod')}
                 </Anchor>
               </Group>
               <PaymentModule
+                amount={amount}
                 onPay={onComplete}
                 children={
                   <>

@@ -1,10 +1,10 @@
 import { useLanguage } from "../../hooks/useLanguage";
 import standarize from "../../utils/standarize";
 import { Avatar, Badge, Box, Card, Group, Text } from "@mantine/core";
-import { IconTransfer } from "@tabler/icons-react";
+import { IconTransfer, IconCheck, IconX } from "@tabler/icons-react";
 import React from "react";
 
-interface IPendingsPaymentModal {
+interface IPaymentsHistory {
   data: {
     id: number;
     payment: 'Pago Móvil' | 'Zelle' | 'Stripe';
@@ -36,16 +36,38 @@ interface IPendingsPaymentModal {
   children?: React.ReactNode
 }
 
-function PendingPaymentsModal({ data, children }: IPendingsPaymentModal) {
+interface IPfpIcon {
+  status: 'accepted' | 'rejected' | 'refunded'
+}
+
+const IconPfp = ({ status }: IPfpIcon) => {
+  const colors = {
+    accepted: 'teal',
+    rejected: 'red',
+    refunded: 'light'
+  }
+
+  const icons = {
+    accepted: <IconCheck size="2.5rem" />,
+    rejected: <IconX size="2.5rem" />,
+    refunded: <IconTransfer size="2.5rem" />
+  }
+
+  return (
+    <Avatar size="xl" color={colors[status]} radius="xl">
+      { icons[status] }
+    </Avatar>
+  )
+}
+
+function PaymentHistoryModal({ data, children }: IPaymentsHistory) {
   const { currentExchange } = useLanguage()
   return (
     <div>
       <Box bg="sky">
         <Card shadow="xs" padding="xl">
           <Group position="center" mb={20}>
-            <Avatar size="xl" color="light" radius='xl'>
-              <IconTransfer />
-            </Avatar>
+            <IconPfp status={data.status} />
           </Group>
           <Text align="center" size={25} fw={700}>
           {
@@ -80,4 +102,4 @@ function PendingPaymentsModal({ data, children }: IPendingsPaymentModal) {
   )
 }
 
-export default PendingPaymentsModal
+export default PaymentHistoryModal

@@ -1,26 +1,34 @@
 import { Button, Card, Group, Text, TextInput } from "@mantine/core";
 import React, { useState } from "react"
 import { useForm } from "@mantine/form";
-import { IconHash, IconUser } from "@tabler/icons-react";
-
+import { IconAt, IconHash, IconUser } from "@tabler/icons-react";
 import { useTranslation } from 'react-i18next';
+import axios from "axios";
+import { useClient } from "../../../hooks/useClient";
+
 interface IPayment {
   children: React.ReactNode;
+  amount: number;
   onPay: () => void;
 }
 
 interface IPaymentForm {
   name: string;
   reference: string;
+  email: string;
+  amount: number;
 }
 
-function ZellePayment({ children, onPay }: IPayment) {
+function ZellePayment({ amount, children, onPay }: IPayment) {
   const [isNext, setIsNext] = useState<boolean>(false)
+  const { client } = useClient();
 
   const form = useForm<IPaymentForm>({
     initialValues: {
       name: '',
-      reference: ''
+      reference: '',
+      email: '',
+      amount: amount
     },
     validate: {
       name: (value) => (value.length < 3 ? 'Ingrese un número de referencia' : null),
@@ -28,13 +36,35 @@ function ZellePayment({ children, onPay }: IPayment) {
     }
   })
 
+  const submit = () => {
+    axios.post('http://localhost:3000/social/payment_methods', {
+      social_payment_method: {
+        amount: amount,
+        currency: 'USD',
+        payment: 'Zelle',
+        social_client_id: client.id,
+        details: {
+          name: form.values.name,
+          email: form.values.email,
+          reference: form.values.reference
+        }
+      }
+    }, {
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    }).then(() => {
+      onPay()
+    }).catch(() => {
+      console.log('error')
+    })
+  }
+
   const { t } = useTranslation();
   const PaymentWall = () => {
-
     return (
       <>
         <Text fw={300} fz={14} ta="center" mb={10}>
-
           {t('beneficiaryDetails')}
         </Text>
         <Group position="center">
@@ -52,7 +82,7 @@ function ZellePayment({ children, onPay }: IPayment) {
   }
 
   return (
-    <div>
+    <form onSubmit={submit}>
       <Card withBorder my={10}>
         {
           isNext ? (
@@ -60,12 +90,22 @@ function ZellePayment({ children, onPay }: IPayment) {
               <TextInput
                 w="100%"
                 label={t('accountHolderName')}
-                placeholder={t('accountHolderName ')}
+                placeholder={t('accountHolderName')}
                 mb={20}
                 size="xs"
                 icon={<IconUser size='1rem' />}
                 error={form.errors.name}
                 {...form.getInputProps('name')}
+              />
+              <TextInput
+                w="100%"
+                label={t('accountEmailName')}
+                placeholder={t('accountEmailName')}
+                mb={20}
+                size="xs"
+                icon={<IconAt size='1rem' />}
+                error={form.errors.email}
+                {...form.getInputProps('email')}
               />
               <TextInput
                 w="100%"
@@ -89,7 +129,7 @@ function ZellePayment({ children, onPay }: IPayment) {
               size="xs"
               color="teal"
               disabled={form.values.reference.length < 6}
-              onClick={onPay}
+              type="submit"
             >
               {t('notifyPayment')}
             </Button>
@@ -99,7 +139,6 @@ function ZellePayment({ children, onPay }: IPayment) {
               size="xs"
               onClick={() => setIsNext(true)}
             >
-
               {t('confirmPayment')}
             </Button>
           )
@@ -108,7 +147,7 @@ function ZellePayment({ children, onPay }: IPayment) {
           {children}
         </div>
       </Group>
-    </div>
+    </form>
   )
 }
 
