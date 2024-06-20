@@ -20,7 +20,7 @@ function actions () {
     {
       title: 'Mis rifas',
       description: 'Información de tus rifas y sorteos',
-      onTrigger: () => navigate('/admin/raffles'),
+      onTrigger: () => navigate('/admin/Coupona'),
       icon: <IconFileText size="1.2rem" />,
     },
   ])

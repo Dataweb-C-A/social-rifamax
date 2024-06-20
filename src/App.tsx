@@ -14,6 +14,7 @@ const Profile = lazy(() => import("./pages/Profile"));
 const Payments = lazy(() => import("./pages/Payments"));
 const Gate = lazy(() => import("./pages/Gate"));
 const Coupon = lazy(() => import("./pages/Coupon"));
+const Coupona = lazy(() => import("./pages/Couponadmin"));
 
 function App() {
   return (
@@ -26,7 +27,8 @@ function App() {
         <Route path="coupon" element={<Coupon />} />
         <Route path="rafflesi" element={<Rafflesi />} />
         <Route path="admin" element={<AuthRoute />}>
-          <Route path="profile" element={<Profile />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="Coupona" element={<Coupona />} />
           <Route path="dashboard" element={<Home />} />
           <Route path="payments" element={<Payments />} />
         </Route>

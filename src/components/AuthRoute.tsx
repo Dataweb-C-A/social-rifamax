@@ -10,7 +10,7 @@ function AuthRoute() {
 
   const links = [
     { label: t('navbarPayments'), href: '/admin/payments', icon: <IconPremiumRights size="3rem" stroke={1.5} /> },
-    { label: t('navbarMyRaffles'), href: '/raffles', icon: <IconGift size="3rem" stroke={1.5} /> },
+    { label: t('navbarMyRaffles'), href: '/admin/Coupona', icon: <IconGift size="3rem" stroke={1.5} /> },
     { label: t('navbarMyProfile'), href: '/admin/profile', icon: <IconUserCircle size="3rem" stroke={1.5} /> }
   ]
 
