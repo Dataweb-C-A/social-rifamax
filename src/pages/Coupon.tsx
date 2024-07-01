@@ -1,26 +1,33 @@
-import { Breadcrumbs, Anchor, Card, createStyles, Title, Group, Text, Stepper, ScrollArea, Button, Divider, Avatar } from "@mantine/core"
+import { Card, createStyles, Title, Group, Text, Stepper, ScrollArea, Button, Divider, Avatar } from "@mantine/core"
 import Layout from "../Layout"
 import { useTranslation } from 'react-i18next';
 import PublicNavbar from "../components/PublicNavbar"
-import { useNavigate } from "react-router-dom"
 import { useMediaQuery } from '@mantine/hooks';
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion } from 'framer-motion'
 import { IconCheck, IconCreditCard, IconMinus, IconPlus, IconShoppingBag, IconTrash, IconUser } from "@tabler/icons-react";
 import { CouponForm } from "../layouts/coupon/Coupon.form";
 import Checkout from "../components/Checkout";
+import InfluencerCard from "../components/InfluencerCard";
+import { IRaffles } from "../interfaces";
+import { useInfluencer } from "../hooks/useInfluencer";
+import axios from "axios";
 
-interface ICoupon {
-
-}
-
-function Coupon({ }: ICoupon) {
+function Coupon() {
   const isMobile = useMediaQuery(`(max-width: 900px)`);
+
+  const count = 3;
 
   const [illumination, setIllumination] = useState<boolean>(false);
   const [quantity, setQuantity] = useState<number>(0)
   const [touchMove, setTouchMove] = useState<string>('0%');
   const [active, setActive] = useState<number>(0);
+  const [page, setPage] = useState<number>(1)
+  const [pages, setPages] = useState<number>(1)
+  const [raffles, setRaffles] = useState<IRaffles[]>([])
+  const [raffleSelected, setRaffleSelected] = useState<IRaffles | null>(null)
+
+  const { influencer } = useInfluencer();
 
   const useStyles = createStyles((theme) => ({
     main: {},
@@ -57,6 +64,7 @@ function Coupon({ }: ICoupon) {
     couponContainer: {
       display: 'flex',
       justifyContent: 'center',
+      marginTop: -20,
       flexWrap: 'wrap',
     },
     paymentDesktop: {
@@ -114,7 +122,6 @@ function Coupon({ }: ICoupon) {
       background: theme.colors.blue[6]
     },
     couponSelector: {
-      backgroundImage: 'url(https://api.rifa-max.com/uploads/x100/raffle/ad/28/Hyundai-Santa-Fe-2023-10.jpg)',
       backgroundPosition: 'center center',
       backgroundSize: 'cover',
     },
@@ -142,25 +149,39 @@ function Coupon({ }: ICoupon) {
     },
     plusButton: {
       borderRadius: '0 3px 3px 0'
+    },
+    influencer: {
+      cursor: 'pointer',
+      background: 'linear-gradient(45deg, #3b5bdb 0%, #0c8599 100%)',
+      color: '#fff',
+      padding: '7px 10px',
+      fontWeight: 550,
+      borderRadius: '4px'
     }
   }))
 
   const { classes } = useStyles()
-  const navigate = useNavigate()
   const constraintsRef = useRef(null);
+
+  useEffect(() => {
+    axios.get(`http://localhost:3000/social/raffles/actives?content_code=${influencer?.content_code}&count=${count}&page=${page}`)
+      .then((res) => {
+        setRaffles(res.data.social_raffles)
+        setPage(res.data.metadata.page)
+        setPages(res.data.metadata.pages)
+      }).catch((err) => {
+        console.log(err)
+      })
+  }, [])
+
+  const selectRaffle = (data: IRaffles) => {
+    setQuantity(quantity + 1)
+    setRaffleSelected(data)
+  }
 
   const { t } = useTranslation();
   const nextStep = () => setActive((current) => (current < 3 ? current + 1 : current));
   const prevStep = () => setActive((current) => (current > 0 ? current - 1 : current));
-
-  const items = [
-    { title: t('raffles'), href: '/raffles' },
-    { title: t('couponsTitle'), href: '/coupon' },
-  ].map((item, index) => (
-    <Anchor fz={17} mt={-2} onClick={() => navigate(item.href)} key={index}>
-      {item.title}
-    </Anchor>
-  ));
 
   const addQuantity = (value: number) => {
     if (active === 0) {
@@ -180,37 +201,41 @@ function Coupon({ }: ICoupon) {
   const SuperiorHead = () => (
     <Group position="apart">
       <div>
-
-
         <Title order={2} mb={10}>
           {t('couponsTitle')}
         </Title>
       </div>
-      <Breadcrumbs>{items}</Breadcrumbs>
+      <InfluencerCard />
     </Group>
   )
 
   const CouponSelector = () => (
-    <Card
-      className={classes.couponSelector}
-      w="100%"
-      h={180}
-    >
-      <Text
-        className={classes.raffleLabel}
-      >
-        Hyundai Santa Fe 2024
-      </Text>
-      <Button
-        size="xs"
-        className={classes.buttonBuy}
-        variant="gradient"
-        onClick={() => addQuantity(1)}
-      >
-
-        {t('buy')}
-      </Button>
-    </Card>
+    raffles.map((raffle) => {
+      return (
+        <Card
+          key={raffle.id}
+          className={classes.couponSelector}
+          style={{ backgroundImage: raffle.ad.url === null ? 'url(/no_image.jpg)' : `url(${raffle.ad.url})` }}
+          w="100%"
+          h={180}
+        >
+          <Text
+            className={classes.raffleLabel}
+          >
+            {raffle.title}
+          </Text>
+          <Button
+            size="xs"
+            className={classes.buttonBuy}
+            variant="gradient"
+            onClick={() => selectRaffle(raffle)}
+            disabled={raffleSelected !== null && raffleSelected?.id !== raffle.id}
+          >
+            {t('buy')}
+          </Button>
+        </Card>
+      )
+    })
   )
 
   const Steps = () => {
@@ -239,16 +264,15 @@ function Coupon({ }: ICoupon) {
                         {key + 1}
                       </Card>
                       <div>
-
                         <Text fw={500} fz={15}>
-                          Rifa de Hyundai Santa Fe 2023
+                          Rifa de {raffleSelected?.title}
                         </Text>
                         <Text fw={300} mt={-2} fz={10} c="dimmed" italic>
 
                           {t('quantity')}: 1
                         </Text>
                         <Text fw={300} fz={10} mt={-5} c="dimmed" italic>
-                          {t('prize')}: 21$
+                          {t('prize')}: {raffleSelected?.price_unit.toFixed(2)}$
                         </Text>
                       </div>
                       <div className={classes.removeButton}>
@@ -300,7 +324,7 @@ function Coupon({ }: ICoupon) {
                 {t('totalAmount')}:
               </Text>
               <Text fz={14} ta="end" fw={300}>
-                {quantity * 21}$
+                {quantity * Number(raffleSelected?.price_unit)}$
               </Text>
 
             </div>

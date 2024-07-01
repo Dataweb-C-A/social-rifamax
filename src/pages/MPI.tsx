@@ -155,7 +155,6 @@ function MPI() {
     const handleCountryChange = (selectedOption: string) => {
         if (selectedOption) {
             setSelectedCountry(selectedOption);
-            console.log("País seleccionado:", selectedOption);
         }
     };
 

@@ -1,7 +1,7 @@
 import { Button, Card, Group, Text, TextInput } from "@mantine/core";
 import React, { useState } from "react"
 import { useForm } from "@mantine/form";
-import { IconAt, IconHash, IconUser } from "@tabler/icons-react";
+import { IconHash, IconUser } from "@tabler/icons-react";
 import { useTranslation } from 'react-i18next';
 import axios from "axios";
 import { useClient } from "../../../hooks/useClient";
@@ -15,7 +15,6 @@ interface IPayment {
 interface IPaymentForm {
   name: string;
   reference: string;
-  email: string;
   amount: number;
 }
 
@@ -27,7 +26,6 @@ function ZellePayment({ amount, children, onPay }: IPayment) {
     initialValues: {
       name: '',
       reference: '',
-      email: '',
       amount: amount
     },
     validate: {
@@ -45,7 +43,6 @@ function ZellePayment({ amount, children, onPay }: IPayment) {
         social_client_id: client.id,
         details: {
           name: form.values.name,
-          email: form.values.email,
           reference: form.values.reference
         }
       }
@@ -56,7 +53,6 @@ function ZellePayment({ amount, children, onPay }: IPayment) {
     }).then(() => {
       onPay()
     }).catch(() => {
-      console.log('error')
     })
   }
 
@@ -96,16 +92,6 @@ function ZellePayment({ amount, children, onPay }: IPayment) {
                 icon={<IconUser size='1rem' />}
                 error={form.errors.name}
                 {...form.getInputProps('name')}
-              />
-              <TextInput
-                w="100%"
-                label={t('accountEmailName')}
-                placeholder={t('accountEmailName')}
-                mb={20}
-                size="xs"
-                icon={<IconAt size='1rem' />}
-                error={form.errors.email}
-                {...form.getInputProps('email')}
               />
               <TextInput
                 w="100%"

@@ -1,21 +1,18 @@
-import { Badge, Button, Loader, SegmentedControl, Table, createStyles, Group, Text } from '@mantine/core'
-import { IconInfoCircle } from '@tabler/icons-react';
+import { Badge, Button, Loader, SegmentedControl, Table, createStyles, Group, Text, Box, Avatar, Paper } from '@mantine/core'
+import { IconBoxOff, IconChevronLeft, IconChevronRight, IconInfoCircle } from '@tabler/icons-react';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { modals } from '@mantine/modals'
 import PaymentHistoryModal from '../layouts/payments/PaymentHistory.modal'
 import { useTranslation } from 'react-i18next';
-
-// interface IPaymentsHistory {
-//   contentCode: string
-// }
+import useAuth from '../hooks/useAuth';
 
 interface IHistory {
   id: number;
   payment: 'Pago Móvil' | 'Zelle' | 'Stripe';
   amount: number;
   currency: 'USD' | 'VES' | 'COP';
-  status: 'active' | 'rejected' | 'refunded';
+  status: 'active' | 'rejected' | 'refunded' | 'accepted';
   details: {
     name: string;
     email?: string;
@@ -39,11 +36,15 @@ interface IHistory {
   created_at: string;
 }
 
-interface IBadges {
-  status: 'solved' | 'rejected' | 'refund'
+interface IModal {
+  data: IHistory
 }
 
-const useStyles = createStyles((theme) => ({
+interface IBadges {
+  status: 'accepted' | 'rejected' | 'refunded' | 'active'
+}
+
+const useStyles = createStyles(() => ({
   tableBody: {
     height: '10px !important',
     overflowY: 'scroll'
@@ -53,9 +54,10 @@ const useStyles = createStyles((theme) => ({
 function PaymentsHistory() {
   const { classes } = useStyles();
   const { t } = useTranslation()
+  const { token } = useAuth();
 
   const paymentsMethods = ['Pago Móvil', 'Zelle', 'Stripe']
-  
+
   const [paymentSelected, setPaymentSelected] = useState<string>('Zelle')
   const [elements, setElements] = useState<IHistory[]>([])
   const [loading, setLoading] = useState<boolean>(true)
@@ -66,9 +68,9 @@ function PaymentsHistory() {
   useEffect(() => {
     setError(false)
     setLoading(true)
-    axios.get(`http://localhost:3000/social/payment_methods/history?payment=${paymentSelected}`, {
+    axios.get(`http://localhost:3000/social/payment_methods/history?payment=${paymentSelected}&page=${page}`, {
       headers: {
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjo0NDQsImV4cCI6MTcxOTQ5NTU5OX0.OdoZzZqmXvGLw96_-wIRH0WQCorfgvuTCOer66TtrGw'
+        'Authorization': `Bearer ${token}`
       }
     })
       .then((res) => {
@@ -82,21 +84,24 @@ function PaymentsHistory() {
       })
   }, [paymentSelected, page])
 
-  const openModal = ({ data }: IModal) => modals.openConfirmModal({
+  const openModal = ({ data }: IModal) => modals.open({
     title: t('verifyPaymentModalTitle'),
+    centered: true,
     children: (
       <PaymentHistoryModal
         data={data}
-      />
-    ),
-    labels: { confirm: t('acceptActionPaymentModal'), cancel: t('cancelActionPaymentModal') },
-    centered: true,
+      >
+        <Button fullWidth onClick={() => modals.closeAll()} mt="md">
+          {t('accept')}
+        </Button>
+      </PaymentHistoryModal>
+    )
   })
 
   const SelectBadge = ({ status }: IBadges) => {
     return (
       <Badge color={
-        status === 'solved' ? 'teal' :
+        status === 'accepted' ? 'teal' :
           status === 'rejected' ? 'red' :
             'blue'
       }>
@@ -124,19 +129,44 @@ function PaymentsHistory() {
           </Group>
         ) : (
           <>
-            <SegmentedControl
-              mt={20}
-              data={paymentsMethods}
-              value={paymentSelected}
-              onChange={(value) => setPaymentSelected(value)}
-            />
+            <Text fw={700} size="sm" w="100%" ta="end" ml={-15} mb={-20} mt={15}>
+              {t('page')} {page} {t('of')} {pages}
+            </Text>
+            <Group position='apart'>
+              <SegmentedControl
+                mt={20}
+                data={paymentsMethods}
+                value={paymentSelected}
+                onChange={(value) => setPaymentSelected(value)}
+              />
+              <Paper style={{ display: 'flex', flexWrap: 'wrap' }} mt={15}>
+                <Button
+                  size="sm"
+                  style={{ borderRadius: '5px 0 0 5px' }}
+                  onClick={() => setPage(page - 1)}
+                  disabled={page === 1}
+                  w="50%"
+                >
+                  <IconChevronLeft />
+                </Button>
+                <Button
+                  size="sm"
+                  style={{ borderRadius: '0 5px 5px 0' }}
+                  onClick={() => setPage(page + 1)}
+                  disabled={page === pages}
+                  w="50%"
+                >
+                  <IconChevronRight />
+                </Button>
+              </Paper>
+            </Group>
             {
               error ? (
                 <Group w="100%" mt={20} position="center">
                   <Text fw={700} fz={20}>
-                    Something went wrong...  
-                  </Text>  
-                </Group> 
+                    {t('errorLoading')}
+                  </Text>
+                </Group>
               ) : (
                 <Table className={classes.tableBody} mt={10} striped highlightOnHover withBorder withColumnBorders>
                   <thead>
@@ -147,9 +177,37 @@ function PaymentsHistory() {
                       <th style={{ textAlign: 'center' }}>{t('optionsTablePH')}</th>
                     </tr>
                   </thead>
-                  <tbody>
-                    {rows}
-                  </tbody>
+                  {
+                    elements.length === 0 ? (
+                      <Box
+                        w="100%"
+                        my={260}
+                      >
+                        <div
+                          style={{ position: 'absolute', left: '50%', transform: 'translate(-50%, -235%)' }}
+                        >
+                          <Avatar color="red" size="xl" radius="xl">
+                            <IconBoxOff size="2.5rem" />
+                          </Avatar>
+                        </div>
+                        <div
+                          style={{ position: 'absolute', left: '50%', transform: 'translate(-50%, -445%)' }}
+                        >
+                          <Text
+                            ta="center"
+                            fw={700}
+                            size="sm"
+                          >
+                            {t('noPaymentsFound')}
+                          </Text>
+                        </div>
+                      </Box>
+                    ) : (
+                      <tbody>
+                        {rows}
+                      </tbody>
+                    )
+                  }
                 </Table>
               )
             }

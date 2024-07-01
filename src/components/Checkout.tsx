@@ -1,7 +1,7 @@
 import { Anchor, Box, Button, Card, Group, Radio, Text } from "@mantine/core";
 import { useState, useEffect } from "react";
-
 import { useTranslation } from 'react-i18next';
+
 interface ICheckout {
   paymentMethods: ('Pago Móvil' | 'Zelle' | 'Stripe')[];
   quantity: number;
@@ -22,10 +22,6 @@ function Checkout({ amount, quantity, onComplete }: ICheckout) {
 
   const { t } = useTranslation();
   const totalAmountments = ['Pago Móvil', 'Zelle']
-
-  // if (flagEnabled) {
-  //   totalAmountments.push('Stripe')
-  // }
 
   type IPaymentType = typeof totalAmountments[number];
 

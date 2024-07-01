@@ -1,16 +1,16 @@
-import { RootState } from "@/store";
-import { IconX } from '@tabler/icons-react';
 import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { setUser, clearUser, setToken } from "@/store/reducers/userSlice";
+import { RootState } from "@/store";
+import { IconX, IconInfoCircle } from '@tabler/icons-react';
+import { useSelector } from "react-redux";
 import { notifications } from "@mantine/notifications";
 import { Text } from "@mantine/core";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { useUser } from "./useUser";
 
 export default function useAuth() {
-  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const location = useLocation();
+
+  const { clear, update } = useUser();
 
   const login = (email: string, password: string) => {
     axios
@@ -20,16 +20,17 @@ export default function useAuth() {
       })
       .then((response) => {
         localStorage.setItem("token", response.data.token);
-        console.log('user', response.data)
-        dispatch(setUser(response.data));
-        navigate('/admin/dashboard');
+        update(response.data.user, response.data.token);
+        navigate('/admin/payments');
       })
       .catch(() => {
         notifications.show({
           autoClose: 5000,
           title: <Text c="white" fw={700} fz={17} italic>No autorizado.</Text>,
           message: <Text c="white" fz={15}>Correo o contraseña incorrectos.</Text>,
+          icon: <IconX size={20} />,
           color: "red",
+          loading: false,
           withCloseButton: true,
           className: "my-notification-class",
           style: { backgroundColor: "red", height: '100px' },
@@ -41,7 +42,6 @@ export default function useAuth() {
 
               '&::before': { backgroundColor: theme.white },
             },
-
             title: { color: theme.white },
             description: { color: theme.white },
             closeButton: {
@@ -49,103 +49,62 @@ export default function useAuth() {
               '&:hover': { backgroundColor: theme.colors.red[7] },
             },
           }),
-          loading: false,
         });
       });
   };
 
-  const token = localStorage.getItem('token')
+  const token = useSelector((state: RootState) => state.user.token);
 
-  const refreshToken = (token: string | null, acceptAction?: void, rejectAction?: void) => {
-    const actionByStatus = (status_code: number, block: void) => {
-      switch (status_code) {
-        case 401:
-          block
-          break
-        case 403:
-          signOut(true)
-          break
-        default:
-          signOut(true)
-          break
-      }
-    }
-
-    axios.post('https://api.rifa-max.com/shared/refresh', {
-      token: token
-    }).then((response) => {
-      setTimeout(() => {
-        acceptAction
-        dispatch(setToken(response.data.token))
-        const parsePath = location.pathname === '/login' ? '/admin/dashboard' : location.pathname
-        navigate(parsePath)
-      }, 2000)
-    }).catch((err) => {
-      setTimeout(() => {
-        rejectAction
-        actionByStatus(err.response.status, console.log('raffles'))
-        throw new Error("User's token can't be refreshed")
-      }, 2000)
-    })
-  }
-
-  const isAuthenticated = (token: string) => {
-    return (axios.get(`https://api.rifa-max.com/shared/users/profile`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    })
-      .then((res) => {
-        dispatch(setUser(res.data.user))
-        return true;
-      })
-      .catch(() => {
-        refreshToken(token)
-        return false;
-      })) as Promise<boolean>;
-  };
-
-  const userIsAuthenticated = async () => {
-    const token = localStorage.getItem('token') || '';
-    return await isAuthenticated(token);
-  };
-
-  const profile = (token: string) => {
-    axios
-      .get(`https://api.rifa-max.com/shared/users/profile`, {
+  const authenticate = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/shared/users/profile', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${String(token)}`,
         },
-      })
-      .then((response) => {
-        dispatch(setUser(response.data.user));
-        return response.data;
-      })
-      .catch(() => {
-        dispatch(clearUser());
-        notifications.show({
-          autoClose: 5000,
-          title: <Text c="white" fw={700} fz={17} italic>Ha ocurrido un error.</Text>,
-          message: <Text c="white" fz={15}>Su sesión ha expirado, ingrese de nuevo.</Text>,
-          color: "red",
-          icon: <IconX />,
-          withCloseButton: true,
-          className: "my-notification-class",
-          style: { backgroundColor: "red" },
-          sx: { backgroundColor: "red" },
-          loading: false,
-        });
       });
+      update({user: response.data}, String(token));
+      return response.data;
+    } catch (error) {
+      clear();
+      notifications.show({
+        title: <Text c="white" fw={700} fz={17} italic>Sesión expirada.</Text>,
+        message: <Text c="white" fz={15}>Su sesión ha expirado, ingrese nuevamente</Text>,
+        color: '#1971c2',
+        icon: <IconInfoCircle size={20} />,
+        loading: false,
+        withCloseButton: true,
+        autoClose: 5000,
+        style: { backgroundColor: '#1971c2', height: '100px' },
+        sx: { backgroundColor: "red" },
+        styles: (theme) => ({
+          root: {
+            backgroundColor: theme.colors.blue[6],
+            borderColor: theme.colors.blue[6],
+  
+            '&::before': { backgroundColor: theme.white },
+          },
+          title: { color: theme.white },
+          description: { color: theme.white },
+          closeButton: {
+            color: theme.white,
+            '&:hover': { backgroundColor: theme.colors.blue[7] },
+          },
+        }),
+      })
+      navigate('/login')
+      return false;
+    }
   };
 
-  const signOut = (redirect?: boolean) => {
-    dispatch(clearUser());
-    redirect ?
-      navigate("/login")
-      : null
+  const signOut = () => {
+    clear();
+    navigate('/login');
   };
 
-  const user = useSelector((state: RootState) => state.user);
-
-  return { login, user, signOut, profile, userIsAuthenticated, isAuthenticated, refreshToken, token };
+  return {
+    login,
+    signOut,
+    authenticate,
+    token
+  };
 }

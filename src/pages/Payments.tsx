@@ -63,8 +63,8 @@ function Payments() {
           </Group>
           {
             Tab === 'history' 
-              ? <PaymentsHistory contentCode="angela" /> 
-              : <PaymentsPendings contentCode="angela" /> 
+              ? <PaymentsHistory /> 
+              : <PaymentsPendings /> 
           }
         </motion.div>
       </div>

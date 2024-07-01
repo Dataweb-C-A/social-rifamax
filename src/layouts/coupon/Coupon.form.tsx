@@ -83,7 +83,6 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
         phone: phone
       }
     }).then(response => {
-      console.log(response.data)
       changeClient({
         data: {
           id: response.data.id,
@@ -101,8 +100,7 @@ function CouponForm({ nextStep, prevStep }: ICouponForm) {
         }
       })
       setUserData(response.data)
-    }).catch(error => {
-      console.log(error)
+    }).catch(() => {
       setUserData(null)
     })
   }

@@ -1,7 +1,7 @@
 import { useLanguage } from "../../hooks/useLanguage";
 import standarize from "../../utils/standarize";
 import { Avatar, Badge, Box, Card, Group, Text } from "@mantine/core";
-import { IconTransfer, IconCheck, IconX } from "@tabler/icons-react";
+import { IconTransfer, IconCheck, IconX, IconInfoCircle } from "@tabler/icons-react";
 import React from "react";
 
 interface IPaymentsHistory {
@@ -10,7 +10,7 @@ interface IPaymentsHistory {
     payment: 'Pago Móvil' | 'Zelle' | 'Stripe';
     amount: number;
     currency: 'USD' | 'VES' | 'COP';
-    status: 'active' | 'rejected' | 'refunded';
+    status: 'active' | 'rejected' | 'refunded' | 'accepted';
     details: {
       name: string;
       email?: string;
@@ -37,17 +37,19 @@ interface IPaymentsHistory {
 }
 
 interface IPfpIcon {
-  status: 'accepted' | 'rejected' | 'refunded'
+  status: 'active' | 'accepted' | 'rejected' | 'refunded'
 }
 
 const IconPfp = ({ status }: IPfpIcon) => {
   const colors = {
+    active: 'blue',
     accepted: 'teal',
     rejected: 'red',
     refunded: 'light'
   }
 
-  const icons = {
+  const icons: { [key: string]: JSX.Element } = {
+    active: <IconInfoCircle size="2.5rem" />,
     accepted: <IconCheck size="2.5rem" />,
     rejected: <IconX size="2.5rem" />,
     refunded: <IconTransfer size="2.5rem" />
@@ -55,7 +57,7 @@ const IconPfp = ({ status }: IPfpIcon) => {
 
   return (
     <Avatar size="xl" color={colors[status]} radius="xl">
-      { icons[status] }
+      {icons[status]}
     </Avatar>
   )
 }

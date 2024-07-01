@@ -1,7 +1,6 @@
 import { StrictMode, useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { MantineProvider, Text } from '@mantine/core';
-import Loading from './components/Loading.tsx';
 import { Provider, useSelector } from 'react-redux'
 import { store, RootState } from './store'
 import { BrowserRouter as Router } from 'react-router-dom';
@@ -10,6 +9,7 @@ import { SpotlightProvider } from '@mantine/spotlight';
 import { IconMapSearch, IconSearch } from '@tabler/icons-react';
 import { actions } from './utils/actions.tsx';
 import { ModalsProvider } from '@mantine/modals';
+import Loading from './components/Loading.tsx';
 import './index.css';
 import './i18n.ts'
 
@@ -27,18 +27,25 @@ const AppWrapper = () => {
   const mode = useSelector((state: RootState) => state.theme.mode)
   const [App, setApp] = useState<React.FC | null>(null);
 
-  useEffect(() => {
-    let importPromise;
-    if (import.meta.env.MODE === 'web') {
-      importPromise = import('./App.tsx');
-    } else {
-      importPromise = import('./Default.tsx');
-    }
+  const loadingMessage = {
+    en: 'Loading page...',
+    es: 'Cargando página...'
+  }
 
-    importPromise.then(module => {
-      setApp(() => module.default);
-    });
-  }, []);
+  const language = (localStorage.getItem("language") as "en" | "es") || 'en';
+
+    useEffect(() => {
+      let importPromise;
+      if (import.meta.env.MODE === 'web') {
+        importPromise = import('./App.tsx');
+      } else {
+        importPromise = import('./Default.tsx');
+      }
+
+      importPromise.then(module => {
+        setApp(() => module.default);
+      });
+    }, []);
 
   return (
     <MantineProvider
@@ -70,7 +77,7 @@ const AppWrapper = () => {
         }
       >
         <ModalsProvider>
-          {!App ? <Loading full message="Loading..." /> : <App />}
+          {!App ? <Loading full message={loadingMessage[language]} /> : <App />}
         </ModalsProvider>
       </SpotlightProvider>
     </MantineProvider>
@@ -89,5 +96,4 @@ export default function Main() {
 
 createRoot(document.getElementById('root')!).render(<Main />);
 
-// Remove Preload scripts loading
 postMessage({ payload: 'removeLoading' }, '*');

@@ -1,29 +1,42 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import axios from "axios";
 
 interface TokenState {
-  token: string | null
+  token: string | null;
 }
 
 interface TrustState {
-  trustInDevice: boolean
+  trustInDevice: boolean;
 }
 
 interface UserState {
   user: {
     id: number;
+    avatar: string | null;
     name: string;
+    email: string;
     dni: string | null;
+    influencer_id: number | null;
     is_active: boolean;
     phone: string;
-    role: 'Admin' | 'Influencer';
+    role: "Admin" | "Influencer";
     content_code: string | null;
+    is_first_entry: boolean;
   } | null;
 }
 
 const initialState: UserState & TokenState & TrustState = {
-  user: null,
-  token: localStorage.getItem('token'),
-  trustInDevice: Boolean(localStorage.getItem("trusted"))
+  user: await axios.get('http://localhost:3000/shared/users/profile', {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`,
+    },
+  }).then((res) => {
+    return res.data;
+  }).catch(() => {
+    return null;
+  }),
+  token: localStorage.getItem("token"),
+  trustInDevice: Boolean(localStorage.getItem("trusted")),
 };
 
 export const userSlice = createSlice({
@@ -31,12 +44,10 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     trustInDevice: (state, action: PayloadAction<boolean>) => {
-      state.user !== null && (
-        state.trustInDevice = action.payload
-      )
+      state.user !== null && (state.trustInDevice = action.payload);
     },
     setToken: (state, action: PayloadAction<string>) => {
-      state.token = action.payload
+      state.token = action.payload;
     },
     setUser: (state, action: PayloadAction<UserState>) => {
       state.user = action.payload.user;
@@ -46,11 +57,12 @@ export const userSlice = createSlice({
       localStorage.removeItem("trust");
       state.user = null;
       state.token = null;
-      state.trustInDevice = false
+      state.trustInDevice = false;
     },
   },
 });
 
-export const { trustInDevice, setUser, clearUser, setToken } = userSlice.actions;
+export const { trustInDevice, setUser, clearUser, setToken } =
+  userSlice.actions;
 
 export default userSlice.reducer;
